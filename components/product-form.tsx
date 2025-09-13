@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { useStore } from "@/lib/store"
+import { useProducts } from "@/hooks/use-products"
 import type { Product } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
+import { ImageUpload } from "@/components/image-upload"
 import { X, Plus } from "lucide-react"
 
 interface ProductFormProps {
@@ -22,7 +23,7 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
-  const { products, addProduct, updateProduct } = useStore()
+  const { products, addProduct, updateProduct, uploadImage } = useProducts()
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -32,12 +33,12 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
     colors: [] as string[],
     images: [] as string[],
     inStock: true,
-    featured: false,
+    featured: true, // Por defecto los productos nuevos son destacados
   })
 
   const [newSize, setNewSize] = useState("")
   const [newColor, setNewColor] = useState("")
-  const [newImage, setNewImage] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "accessories", "shoes"]
   const commonSizes = ["XS", "S", "M", "L", "XL", "XXL"]
@@ -62,7 +63,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
     }
   }, [productId, products])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!formData.title || !formData.description || !formData.price || !formData.category) {
@@ -70,25 +71,39 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
       return
     }
 
-    const productData = {
-      title: formData.title,
-      description: formData.description,
-      price: Number.parseFloat(formData.price),
-      category: formData.category as Product["category"],
-      sizes: formData.sizes,
-      colors: formData.colors,
-      images: formData.images.length > 0 ? formData.images : ["/placeholder.svg"],
-      inStock: formData.inStock,
-      featured: formData.featured,
+    if (formData.images.length === 0) {
+      alert("Por favor subí al menos una imagen del producto")
+      return
     }
 
-    if (productId) {
-      updateProduct(productId, productData)
-    } else {
-      addProduct(productData)
-    }
+    setIsSubmitting(true)
 
-    onSave()
+    try {
+      const productData = {
+        title: formData.title,
+        description: formData.description,
+        price: Number.parseFloat(formData.price),
+        category: formData.category as Product["category"],
+        sizes: formData.sizes,
+        colors: formData.colors,
+        images: formData.images,
+        inStock: formData.inStock,
+        featured: formData.featured,
+      }
+
+      if (productId) {
+        await updateProduct(productId, productData)
+      } else {
+        await addProduct(productData)
+      }
+
+      onSave()
+    } catch (error) {
+      console.error('Error saving product:', error)
+      alert('Error al guardar el producto. Intentá nuevamente.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const addSize = (size: string) => {
@@ -113,16 +128,6 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
     setFormData({ ...formData, colors: formData.colors.filter((c) => c !== color) })
   }
 
-  const addImage = () => {
-    if (newImage && !formData.images.includes(newImage)) {
-      setFormData({ ...formData, images: [...formData.images, newImage] })
-    }
-    setNewImage("")
-  }
-
-  const removeImage = (image: string) => {
-    setFormData({ ...formData, images: formData.images.filter((img) => img !== image) })
-  }
 
   return (
     <Card className="max-w-4xl">
@@ -214,31 +219,12 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                 />
               </div>
 
-              <div>
-                <Label>Imágenes del Producto</Label>
-                <div className="space-y-2">
-                  <div className="flex space-x-2">
-                    <Input
-                      value={newImage}
-                      onChange={(e) => setNewImage(e.target.value)}
-                      placeholder="URL de imagen o /placeholder.svg"
-                    />
-                    <Button type="button" onClick={addImage} size="sm">
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {formData.images.map((image, index) => (
-                      <Badge key={index} variant="secondary" className="flex items-center gap-2">
-                        Imagen {index + 1}
-                        <button type="button" onClick={() => removeImage(image)}>
-                          <X className="h-3 w-3" />
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <ImageUpload
+                images={formData.images}
+                onImagesChange={(images) => setFormData({ ...formData, images })}
+                onUpload={uploadImage}
+                maxImages={5}
+              />
             </div>
           </div>
 
@@ -311,10 +297,12 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
           </div>
 
           <div className="flex justify-end space-x-4">
-            <Button type="button" variant="outline" onClick={onCancel}>
+            <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
               Cancelar
             </Button>
-            <Button type="submit">{productId ? "Actualizar Producto" : "Agregar Producto"}</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Guardando..." : productId ? "Actualizar Producto" : "Agregar Producto"}
+            </Button>
           </div>
         </form>
       </CardContent>

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useStore } from "@/lib/store"
+import { useProducts } from "@/hooks/use-products"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -13,11 +13,16 @@ interface AdminProductListProps {
 }
 
 export function AdminProductList({ onEditProduct }: AdminProductListProps) {
-  const { products, deleteProduct } = useStore()
+  const { products, deleteProduct } = useProducts()
 
-  const handleDelete = (productId: string) => {
+  const handleDelete = async (productId: string) => {
     if (confirm("¿Estás seguro de que querés eliminar este producto?")) {
-      deleteProduct(productId)
+      try {
+        await deleteProduct(productId)
+      } catch (error) {
+        console.error('Error deleting product:', error)
+        alert('Error al eliminar el producto')
+      }
     }
   }
 

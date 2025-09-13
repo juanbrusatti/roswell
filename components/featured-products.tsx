@@ -1,27 +1,56 @@
 "use client"
 
-import { useStore } from "@/lib/store"
+import { useProducts } from "@/hooks/use-products"
 import { ProductCard } from "./product-card"
 
 export function FeaturedProducts() {
-  const { products } = useStore()
-  const featuredProducts = products.filter((product) => product.featured)
+  const { products, loading, error } = useProducts()
+
+  if (loading) {
+    return (
+      <section className="py-16 px-4">
+        <div className="container mx-auto">
+          <div className="text-center">
+            <p>Cargando productos...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="py-16 px-4">
+        <div className="container mx-auto">
+          <div className="text-center">
+            <p className="text-red-500">Error al cargar los productos: {error}</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="py-16 px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">Colección Destacada</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">Nuestra Colección</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Descubrí nuestra selección curada de las mejores prendas urbanas que definen la cultura de la calle.
+            Descubrí nuestra selección completa de prendas urbanas que definen la cultura de la calle.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {products.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No hay productos disponibles en este momento.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

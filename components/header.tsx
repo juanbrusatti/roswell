@@ -16,11 +16,11 @@ export function Header() {
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0)
 
   const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Hoodies", href: "/category/hoodies" },
-    { name: "T-Shirts", href: "/category/tshirts" },
-    { name: "Pants", href: "/category/pants" },
-    { name: "Accessories", href: "/category/accessories" },
+    { name: "Inicio", href: "/" },
+    { name: "Buzos", href: "/category/hoodies" },
+    { name: "Remeras", href: "/category/tshirts" },
+    { name: "Pantalones", href: "/category/pants" },
+    { name: "Accesorios", href: "/category/accessories" },
   ]
 
   return (
@@ -28,7 +28,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
-          <div className="font-bold text-xl text-foreground">STREET</div>
+          <div className="font-bold text-xl text-foreground">ROSWELL</div>
         </Link>
 
         {/* Desktop Navigation */}

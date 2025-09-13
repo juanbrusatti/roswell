@@ -4,43 +4,43 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import type { Product, CartItem } from "./types"
 
-// Mock product data for demonstration
+// Datos de productos de demostración
 const mockProducts: Product[] = [
   {
     id: "1",
-    title: "Urban Oversized Hoodie",
-    description: "Premium cotton blend hoodie with street-inspired graphics. Perfect for layering and everyday wear.",
-    price: 89.99,
+    title: "Buzo Oversized Urbano",
+    description: "Buzo de algodón premium con gráficos inspirados en la calle. Perfecto para usar en capas y para el día a día.",
+    price: 89999,
     images: ["/urban-oversized-hoodie-streetwear.jpg"],
     category: "hoodies",
     sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Black", "White", "Gray"],
+    colors: ["Negro", "Blanco", "Gris"],
     inStock: true,
     featured: true,
     createdAt: new Date(),
   },
   {
     id: "2",
-    title: "Street Graphic Tee",
-    description: "Bold graphic tee with original street art design. Made from sustainable organic cotton.",
-    price: 34.99,
+    title: "Remera Gráfica Street",
+    description: "Remera con diseño gráfico audaz inspirado en el arte callejero. Hecha de algodón orgánico sustentable.",
+    price: 34999,
     images: ["/street-graphic-tee-urban-design.jpg"],
     category: "tshirts",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Black", "White", "Navy"],
+    colors: ["Negro", "Blanco", "Azul Marino"],
     inStock: true,
     featured: true,
     createdAt: new Date(),
   },
   {
     id: "3",
-    title: "Cargo Joggers",
-    description: "Comfortable cargo joggers with multiple pockets. Perfect blend of style and functionality.",
-    price: 79.99,
+    title: "Jogging Cargo",
+    description: "Jogging cargo cómodo con múltiples bolsillos. Perfecta combinación de estilo y funcionalidad.",
+    price: 79999,
     images: ["/cargo-joggers-streetwear-pants.jpg"],
     category: "pants",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Black", "Olive", "Gray"],
+    colors: ["Negro", "Verde Oliva", "Gris"],
     inStock: true,
     featured: false,
     createdAt: new Date(),
@@ -66,7 +66,7 @@ interface ProductStore {
 // Credenciales de administrador (en producción esto debería estar en variables de entorno)
 const ADMIN_CREDENTIALS = {
   username: "admin",
-  password: "roswell2024" // Cambia esto por una contraseña segura
+  password: "roswell2025" // Cambia esto por una contraseña segura
 }
 
 export const useStore = create<ProductStore>()(

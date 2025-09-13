@@ -10,21 +10,20 @@ export function HeroSection() {
 
       <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-balance">
-          STREET
-          <span className="block text-accent">CULTURE</span>
+          ROSWELL
+          <span className="block text-accent">URBANO</span>
         </h1>
 
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-          Authentic streetwear for the urban generation. Express your style with our curated collection of hoodies,
-          tees, and accessories.
+          Indumentaria urbana auténtica para la generación de la calle. Expresa tu estilo con nuestra colección curada de buzos, remeras y accesorios.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" className="text-lg px-8">
-            Shop Collection
+            Ver Colección
           </Button>
           <Button variant="outline" size="lg" className="text-lg px-8 bg-transparent">
-            <Link href="/about">Our Story</Link>
+            <Link href="/about">Nuestra Historia</Link>
           </Button>
         </div>
       </div>

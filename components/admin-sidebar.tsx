@@ -16,34 +16,34 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
   const menuItems = [
     {
       id: "products",
-      label: "Products",
+      label: "Productos",
       icon: Package,
       count: products.length,
     },
     {
       id: "add-product",
-      label: "Add Product",
+      label: "Agregar Producto",
       icon: Plus,
     },
     {
       id: "orders",
-      label: "Orders",
+      label: "Pedidos",
       icon: List,
       count: cart.length,
     },
     {
       id: "analytics",
-      label: "Analytics",
+      label: "Análisis",
       icon: BarChart3,
     },
     {
       id: "customers",
-      label: "Customers",
+      label: "Clientes",
       icon: Users,
     },
     {
       id: "settings",
-      label: "Settings",
+      label: "Configuración",
       icon: Settings,
     },
   ]
@@ -51,7 +51,7 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
   return (
     <Card className="w-64 h-full border-r rounded-none">
       <div className="p-4">
-        <h2 className="text-lg font-semibold mb-4">Management</h2>
+        <h2 className="text-lg font-semibold mb-4">Gestión</h2>
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon

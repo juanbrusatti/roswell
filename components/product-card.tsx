@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        {product.featured && <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">Featured</Badge>}
+        {product.featured && <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">Destacado</Badge>}
         <Button
           variant="ghost"
           size="sm"
@@ -52,9 +52,13 @@ export function ProductCard({ product }: ProductCardProps) {
           <h3 className="font-semibold text-lg text-balance">{product.title}</h3>
           <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
           <div className="flex items-center justify-between">
-            <span className="text-xl font-bold">${product.price}</span>
+            <span className="text-xl font-bold">${product.price.toLocaleString('es-AR')}</span>
             <Badge variant="outline" className="capitalize">
-              {product.category}
+              {product.category === 'hoodies' ? 'Buzos' : 
+               product.category === 'tshirts' ? 'Remeras' : 
+               product.category === 'pants' ? 'Pantalones' : 
+               product.category === 'accessories' ? 'Accesorios' : 
+               product.category === 'shoes' ? 'Zapatillas' : product.category}
             </Badge>
           </div>
         </div>
@@ -64,7 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="grid grid-cols-2 gap-2 w-full">
           <Select value={selectedSize} onValueChange={setSelectedSize}>
             <SelectTrigger>
-              <SelectValue placeholder="Size" />
+              <SelectValue placeholder="Talle" />
             </SelectTrigger>
             <SelectContent>
               {product.sizes.map((size) => (
@@ -95,7 +99,7 @@ export function ProductCard({ product }: ProductCardProps) {
           className="w-full"
         >
           <ShoppingCart className="w-4 h-4 mr-2" />
-          Add to Cart
+          Agregar al Carrito
         </Button>
       </CardFooter>
     </Card>

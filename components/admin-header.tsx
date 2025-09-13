@@ -15,19 +15,19 @@ export function AdminHeader() {
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <Package className="h-6 w-6 text-accent" />
-            <h1 className="text-xl font-bold">Admin Dashboard</h1>
+            <h1 className="text-xl font-bold">Panel de Administración</h1>
           </div>
-          <Badge variant="secondary">{products.length} Products</Badge>
+          <Badge variant="secondary">{products.length} Productos</Badge>
         </div>
 
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="sm">
             <BarChart3 className="h-4 w-4 mr-2" />
-            Analytics
+            Análisis
           </Button>
           <Button variant="ghost" size="sm">
             <Settings className="h-4 w-4 mr-2" />
-            Settings
+            Configuración
           </Button>
         </div>
       </div>

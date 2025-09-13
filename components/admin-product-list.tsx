@@ -16,7 +16,7 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
   const { products, deleteProduct } = useStore()
 
   const handleDelete = (productId: string) => {
-    if (confirm("Are you sure you want to delete this product?")) {
+    if (confirm("¿Estás seguro de que querés eliminar este producto?")) {
       deleteProduct(productId)
     }
   }
@@ -24,18 +24,18 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Product Management</CardTitle>
+        <CardTitle>Gestión de Productos</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Price</TableHead>
+              <TableHead>Producto</TableHead>
+              <TableHead>Categoría</TableHead>
+              <TableHead>Precio</TableHead>
               <TableHead>Stock</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>Estado</TableHead>
+              <TableHead>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -59,23 +59,27 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline" className="capitalize">
-                    {product.category}
+                    {product.category === 'hoodies' ? 'Buzos' : 
+                     product.category === 'tshirts' ? 'Remeras' : 
+                     product.category === 'pants' ? 'Pantalones' : 
+                     product.category === 'accessories' ? 'Accesorios' : 
+                     product.category === 'shoes' ? 'Zapatillas' : product.category}
                   </Badge>
                 </TableCell>
-                <TableCell>${product.price}</TableCell>
+                <TableCell>${product.price.toLocaleString('es-AR')}</TableCell>
                 <TableCell>
                   <div className="text-sm">
-                    <div>Sizes: {product.sizes.join(", ")}</div>
-                    <div>Colors: {product.colors.join(", ")}</div>
+                    <div>Talles: {product.sizes.join(", ")}</div>
+                    <div>Colores: {product.colors.join(", ")}</div>
                   </div>
                 </TableCell>
                 <TableCell>
                   <Badge variant={product.inStock ? "default" : "destructive"}>
-                    {product.inStock ? "In Stock" : "Out of Stock"}
+                    {product.inStock ? "En Stock" : "Sin Stock"}
                   </Badge>
                   {product.featured && (
                     <Badge variant="secondary" className="ml-2">
-                      Featured
+                      Destacado
                     </Badge>
                   )}
                 </TableCell>

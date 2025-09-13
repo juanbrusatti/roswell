@@ -41,7 +41,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
 
   const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "accessories", "shoes"]
   const commonSizes = ["XS", "S", "M", "L", "XL", "XXL"]
-  const commonColors = ["Black", "White", "Gray", "Navy", "Red", "Blue", "Green", "Brown"]
+  const commonColors = ["Negro", "Blanco", "Gris", "Azul Marino", "Rojo", "Azul", "Verde", "Marrón"]
 
   useEffect(() => {
     if (productId) {
@@ -66,7 +66,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
     e.preventDefault()
 
     if (!formData.title || !formData.description || !formData.price || !formData.category) {
-      alert("Please fill in all required fields")
+      alert("Por favor completá todos los campos obligatorios")
       return
     }
 
@@ -127,25 +127,25 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
   return (
     <Card className="max-w-4xl">
       <CardHeader>
-        <CardTitle>{productId ? "Edit Product" : "Add New Product"}</CardTitle>
+        <CardTitle>{productId ? "Editar Producto" : "Agregar Nuevo Producto"}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
-                <Label htmlFor="title">Product Title *</Label>
+                <Label htmlFor="title">Título del Producto *</Label>
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Enter product title"
+                  placeholder="Ingresá el título del producto"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="price">Price *</Label>
+                <Label htmlFor="price">Precio *</Label>
                 <Input
                   id="price"
                   type="number"
@@ -158,18 +158,22 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
               </div>
 
               <div>
-                <Label htmlFor="category">Category *</Label>
+                <Label htmlFor="category">Categoría *</Label>
                 <Select
                   value={formData.category}
                   onValueChange={(value) => setFormData({ ...formData, category: value as Product["category"] })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder="Seleccioná una categoría" />
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((category) => (
-                      <SelectItem key={category} value={category} className="capitalize">
-                        {category}
+                      <SelectItem key={category} value={category}>
+                        {category === 'hoodies' ? 'Buzos' : 
+                         category === 'tshirts' ? 'Remeras' : 
+                         category === 'pants' ? 'Pantalones' : 
+                         category === 'accessories' ? 'Accesorios' : 
+                         category === 'shoes' ? 'Zapatillas' : category}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -183,7 +187,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                     checked={formData.inStock}
                     onCheckedChange={(checked) => setFormData({ ...formData, inStock: !!checked })}
                   />
-                  <Label htmlFor="inStock">In Stock</Label>
+                  <Label htmlFor="inStock">En Stock</Label>
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -192,32 +196,32 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                     checked={formData.featured}
                     onCheckedChange={(checked) => setFormData({ ...formData, featured: !!checked })}
                   />
-                  <Label htmlFor="featured">Featured Product</Label>
+                  <Label htmlFor="featured">Producto Destacado</Label>
                 </div>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <Label htmlFor="description">Description *</Label>
+                <Label htmlFor="description">Descripción *</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Enter product description"
+                  placeholder="Ingresá la descripción del producto"
                   rows={4}
                   required
                 />
               </div>
 
               <div>
-                <Label>Product Images</Label>
+                <Label>Imágenes del Producto</Label>
                 <div className="space-y-2">
                   <div className="flex space-x-2">
                     <Input
                       value={newImage}
                       onChange={(e) => setNewImage(e.target.value)}
-                      placeholder="Image URL or /placeholder.svg"
+                      placeholder="URL de imagen o /placeholder.svg"
                     />
                     <Button type="button" onClick={addImage} size="sm">
                       <Plus className="h-4 w-4" />
@@ -226,7 +230,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                   <div className="flex flex-wrap gap-2">
                     {formData.images.map((image, index) => (
                       <Badge key={index} variant="secondary" className="flex items-center gap-2">
-                        Image {index + 1}
+                        Imagen {index + 1}
                         <button type="button" onClick={() => removeImage(image)}>
                           <X className="h-3 w-3" />
                         </button>
@@ -240,12 +244,12 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label>Available Sizes</Label>
+              <Label>Talles Disponibles</Label>
               <div className="space-y-2">
                 <div className="flex space-x-2">
                   <Select value={newSize} onValueChange={setNewSize}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select size" />
+                      <SelectValue placeholder="Seleccioná un talle" />
                     </SelectTrigger>
                     <SelectContent>
                       {commonSizes.map((size) => (
@@ -273,12 +277,12 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
             </div>
 
             <div>
-              <Label>Available Colors</Label>
+              <Label>Colores Disponibles</Label>
               <div className="space-y-2">
                 <div className="flex space-x-2">
                   <Select value={newColor} onValueChange={setNewColor}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select color" />
+                      <SelectValue placeholder="Seleccioná un color" />
                     </SelectTrigger>
                     <SelectContent>
                       {commonColors.map((color) => (
@@ -308,9 +312,9 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
 
           <div className="flex justify-end space-x-4">
             <Button type="button" variant="outline" onClick={onCancel}>
-              Cancel
+              Cancelar
             </Button>
-            <Button type="submit">{productId ? "Update Product" : "Add Product"}</Button>
+            <Button type="submit">{productId ? "Actualizar Producto" : "Agregar Producto"}</Button>
           </div>
         </form>
       </CardContent>

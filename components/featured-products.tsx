@@ -1,7 +1,7 @@
 "use client"
 
 import { useProducts } from "@/hooks/use-products"
-import { ProductCard } from "./product-card-catalog"
+import { ProductCard } from "./product-card-modern"
 
 export function FeaturedProducts() {
   const { products, loading, error } = useProducts()
@@ -45,9 +45,15 @@ export function FeaturedProducts() {
             <p className="text-muted-foreground">No hay productos disponibles en este momento.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {products.map((product, index) => (
+              <div 
+                key={product.id} 
+                className="animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         )}

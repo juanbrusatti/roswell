@@ -1,7 +1,7 @@
 "use client"
 
 import { useProducts } from "@/hooks/use-products"
-import { ProductCard } from "./product-card-improved"
+import { ProductCard } from "./product-card-catalog"
 
 export function FeaturedProducts() {
   const { products, loading, error } = useProducts()

@@ -31,7 +31,7 @@ export function AdminLayout({ children, sidebar, header }: AdminLayoutProps) {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="lg:hidden fixed top-20 left-4 z-50"
+              className="lg:hidden fixed top-20 left-4 z-50 bg-background/95 backdrop-blur border shadow-md"
             >
               <Menu className="h-4 w-4" />
             </Button>

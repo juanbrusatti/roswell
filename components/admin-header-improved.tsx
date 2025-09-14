@@ -76,16 +76,16 @@ export function AdminHeader() {
 
         {/* Barra de información móvil */}
         <div className="md:hidden pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Badge variant="outline" className="text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline" className="text-xs whitespace-nowrap">
                 {products.length} productos
               </Badge>
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs whitespace-nowrap">
                 {inStockProducts} stock
               </Badge>
             </div>
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="secondary" className="text-xs whitespace-nowrap">
               {featuredProducts} destacados
             </Badge>
           </div>

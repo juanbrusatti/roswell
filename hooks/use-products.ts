@@ -4,6 +4,10 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Product } from '@/lib/types'
 
+// Variables de entorno para verificación
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -140,24 +144,40 @@ export function useProducts() {
   // Subir imagen
   const uploadImage = async (file: File): Promise<string> => {
     try {
+      // Verificar que Supabase esté configurado correctamente
+      if (!supabaseUrl || supabaseUrl === 'https://tu-proyecto.supabase.co') {
+        throw new Error('Supabase no está configurado correctamente. Verifica las variables de entorno.')
+      }
+
+      if (!supabaseAnonKey || supabaseAnonKey === 'tu-clave-publica') {
+        throw new Error('Clave de Supabase no configurada. Verifica NEXT_PUBLIC_SUPABASE_ANON_KEY.')
+      }
+
       const fileExt = file.name.split('.').pop()
       const fileName = `${Date.now()}.${fileExt}`
       const filePath = `products/${fileName}`
+
+      console.log('Intentando subir imagen:', { fileName, filePath, fileSize: file.size })
 
       const { error: uploadError } = await supabase.storage
         .from('product-images')
         .upload(filePath, file)
 
-      if (uploadError) throw uploadError
+      if (uploadError) {
+        console.error('Error de upload específico:', uploadError)
+        throw new Error(`Error de upload: ${uploadError.message}`)
+      }
 
       const { data } = supabase.storage
         .from('product-images')
         .getPublicUrl(filePath)
 
+      console.log('Imagen subida exitosamente:', data.publicUrl)
       return data.publicUrl
     } catch (err) {
-      console.error('Error uploading image:', err)
-      throw new Error('Error al subir la imagen')
+      console.error('Error detallado al subir imagen:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido al subir la imagen'
+      throw new Error(errorMessage)
     }
   }
 

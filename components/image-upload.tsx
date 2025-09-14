@@ -43,7 +43,8 @@ export function ImageUpload({ images, onImagesChange, onUpload, maxImages = 5 }:
       onImagesChange([...images, ...uploadedUrls])
     } catch (error) {
       console.error('Error uploading images:', error)
-      alert('Error al subir las imágenes')
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al subir las imágenes'
+      alert(`Error al subir las imágenes: ${errorMessage}`)
     } finally {
       setIsUploading(false)
     }

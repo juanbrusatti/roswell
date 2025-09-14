@@ -142,29 +142,29 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
       {/* Header */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col space-y-4">
             <div className="flex items-center space-x-3">
               <Button variant="ghost" size="sm" onClick={onCancel}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Volver
               </Button>
-              <div>
-                <CardTitle className="text-xl">
+              <div className="flex-1 min-w-0">
+                <CardTitle className="text-lg sm:text-xl break-words">
                   {productId ? "Editar Producto" : "Agregar Nuevo Producto"}
                 </CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-muted-foreground mt-1 break-words">
                   {productId ? "Modifica la información del producto" : "Completa todos los campos para agregar un nuevo producto"}
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Badge variant="outline">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline" className="text-xs">
                 {formData.images.length} imágenes
               </Badge>
-              <Badge variant="outline">
+              <Badge variant="outline" className="text-xs">
                 {formData.sizes.length} talles
               </Badge>
-              <Badge variant="outline">
+              <Badge variant="outline" className="text-xs">
                 {formData.colors.length} colores
               </Badge>
             </div>
@@ -195,20 +195,20 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
               <CardTitle className="text-lg">Información Básica</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Título del Producto *</Label>
+                  <Label htmlFor="title" className="text-sm font-medium">Título del Producto *</Label>
                   <Input
                     id="title"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     placeholder="Ej: Buzo Oversized Negro"
-                    className={errors.some(e => e.includes("título")) ? "border-destructive" : ""}
+                    className={`text-sm ${errors.some(e => e.includes("título")) ? "border-destructive" : ""}`}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="price">Precio (ARS) *</Label>
+                  <Label htmlFor="price" className="text-sm font-medium">Precio (ARS) *</Label>
                   <Input
                     id="price"
                     type="number"
@@ -217,18 +217,18 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                     placeholder="0.00"
-                    className={errors.some(e => e.includes("precio")) ? "border-destructive" : ""}
+                    className={`text-sm ${errors.some(e => e.includes("precio")) ? "border-destructive" : ""}`}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="category">Categoría *</Label>
+                <Label htmlFor="category" className="text-sm font-medium">Categoría *</Label>
                 <Select
                   value={formData.category}
                   onValueChange={(value) => setFormData({ ...formData, category: value as Product["category"] })}
                 >
-                  <SelectTrigger className={errors.some(e => e.includes("categoría")) ? "border-destructive" : ""}>
+                  <SelectTrigger className={`text-sm ${errors.some(e => e.includes("categoría")) ? "border-destructive" : ""}`}>
                     <SelectValue placeholder="Seleccioná una categoría" />
                   </SelectTrigger>
                   <SelectContent>
@@ -246,21 +246,21 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Descripción *</Label>
+                <Label htmlFor="description" className="text-sm font-medium">Descripción *</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Describe las características del producto..."
                   rows={4}
-                  className={errors.some(e => e.includes("descripción")) ? "border-destructive" : ""}
+                  className={`text-sm resize-none ${errors.some(e => e.includes("descripción")) ? "border-destructive" : ""}`}
                 />
               </div>
 
               <Separator />
 
               <div className="space-y-4">
-                <Label>Configuración del Producto</Label>
+                <Label className="text-sm font-medium">Configuración del Producto</Label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -307,9 +307,9 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
               <CardTitle className="text-lg">Talles Disponibles</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex space-x-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Select value={newSize} onValueChange={setNewSize}>
-                  <SelectTrigger className="flex-1">
+                  <SelectTrigger className="flex-1 text-sm">
                     <SelectValue placeholder="Seleccioná un talle" />
                   </SelectTrigger>
                   <SelectContent>
@@ -320,14 +320,15 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button type="button" onClick={() => addSize(newSize)} size="sm">
-                  <Plus className="h-4 w-4" />
+                <Button type="button" onClick={() => addSize(newSize)} size="sm" className="w-full sm:w-auto">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Agregar
                 </Button>
               </div>
               
               <div className="flex flex-wrap gap-2">
                 {formData.sizes.map((size) => (
-                  <Badge key={size} variant="outline" className="flex items-center gap-2">
+                  <Badge key={size} variant="outline" className="flex items-center gap-2 text-xs">
                     {size}
                     <button type="button" onClick={() => removeSize(size)}>
                       <X className="h-3 w-3" />
@@ -343,9 +344,9 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
               <CardTitle className="text-lg">Colores Disponibles</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex space-x-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Select value={newColor} onValueChange={setNewColor}>
-                  <SelectTrigger className="flex-1">
+                  <SelectTrigger className="flex-1 text-sm">
                     <SelectValue placeholder="Seleccioná un color" />
                   </SelectTrigger>
                   <SelectContent>
@@ -356,14 +357,15 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button type="button" onClick={() => addColor(newColor)} size="sm">
-                  <Plus className="h-4 w-4" />
+                <Button type="button" onClick={() => addColor(newColor)} size="sm" className="w-full sm:w-auto">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Agregar
                 </Button>
               </div>
               
               <div className="flex flex-wrap gap-2">
                 {formData.colors.map((color) => (
-                  <Badge key={color} variant="outline" className="flex items-center gap-2">
+                  <Badge key={color} variant="outline" className="flex items-center gap-2 text-xs">
                     {color}
                     <button type="button" onClick={() => removeColor(color)}>
                       <X className="h-3 w-3" />

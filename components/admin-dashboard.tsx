@@ -1,25 +1,28 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AdminHeader } from "./admin-header"
-import { AdminSidebar } from "./admin-sidebar"
-import { AdminProductList } from "./admin-product-list"
-import { ProductForm } from "./product-form"
+import { AdminLayout } from "./admin-layout"
+import { AdminHeader } from "./admin-header-improved"
+import { AdminSidebar } from "./admin-sidebar-improved"
+import { AdminProductList } from "./admin-product-list-improved"
+import { ProductForm } from "./product-form-improved"
+import { StatCard, StatGrid } from "./admin-stat-cards"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useProducts } from "@/hooks/use-products"
 import { useStore } from "@/lib/store"
 import { Package, DollarSign, ShoppingCart, TrendingUp, Shield, AlertTriangle } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState("products")
+  const [activeTab, setActiveTab] = useState("dashboard")
   const [editingProductId, setEditingProductId] = useState<string | null>(null)
-  const { products, cart, isAuthenticated, isAdmin } = useStore()
+  const { products, loading } = useProducts()
+  const { isAuthenticated, isAdmin } = useStore()
 
   // Redirigir si no está autenticado
   useEffect(() => {
     if (!isAuthenticated || !isAdmin) {
       // En una aplicación real, aquí redirigirías a la página de login
-      // Por ahora, simplemente no renderizamos el dashboard
     }
   }, [isAuthenticated, isAdmin])
 
@@ -51,8 +54,9 @@ export function AdminDashboard() {
   }
 
   const totalRevenue = products.reduce((sum, product) => sum + product.price, 0)
-  const totalOrders = cart.length
   const inStockProducts = products.filter((p) => p.inStock).length
+  const featuredProducts = products.filter((p) => p.featured).length
+  const outOfStockProducts = products.length - inStockProducts
 
   const handleEditProduct = (productId: string) => {
     setEditingProductId(productId)
@@ -66,6 +70,78 @@ export function AdminDashboard() {
 
   const renderContent = () => {
     switch (activeTab) {
+      case "dashboard":
+        return (
+          <div className="space-y-6">
+            {/* Estadísticas principales */}
+            <StatGrid>
+              <StatCard
+                title="Total Productos"
+                value={products.length}
+                icon={Package}
+                badge={{ text: "Catálogo completo" }}
+              />
+              <StatCard
+                title="En Stock"
+                value={inStockProducts}
+                icon={TrendingUp}
+                badge={{ text: `${Math.round((inStockProducts / products.length) * 100)}% disponible` }}
+              />
+              <StatCard
+                title="Sin Stock"
+                value={outOfStockProducts}
+                icon={AlertTriangle}
+                badge={{ text: "Requiere atención", variant: "destructive" }}
+              />
+              <StatCard
+                title="Valor del Catálogo"
+                value={`$${totalRevenue.toLocaleString('es-AR')}`}
+                icon={DollarSign}
+                badge={{ text: "ARS" }}
+              />
+            </StatGrid>
+
+            {/* Estadísticas adicionales */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Productos Destacados</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-accent">{featuredProducts}</div>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Productos marcados como destacados en la tienda
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Estado del Inventario</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">En Stock</span>
+                      <span className="font-medium">{inStockProducts}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">Sin Stock</span>
+                      <span className="font-medium text-destructive">{outOfStockProducts}</span>
+                    </div>
+                    <div className="w-full bg-muted rounded-full h-2">
+                      <div 
+                        className="bg-accent h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${(inStockProducts / products.length) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )
+
       case "products":
         return <AdminProductList onEditProduct={handleEditProduct} />
 
@@ -88,9 +164,12 @@ export function AdminDashboard() {
               <CardTitle>Pedidos Recientes</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">
-                Aún no hay pedidos. Los pedidos aparecerán aquí cuando los clientes realicen compras.
-              </p>
+              <div className="text-center py-12">
+                <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">
+                  Aún no hay pedidos. Los pedidos aparecerán aquí cuando los clientes realicen compras.
+                </p>
+              </div>
             </CardContent>
           </Card>
         )
@@ -98,47 +177,28 @@ export function AdminDashboard() {
       case "analytics":
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Productos</CardTitle>
-                  <Package className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{products.length}</div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">En Stock</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{inStockProducts}</div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Items en Carrito</CardTitle>
-                  <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{totalOrders}</div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Valor del Catálogo</CardTitle>
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">${totalRevenue.toLocaleString('es-AR')}</div>
-                </CardContent>
-              </Card>
-            </div>
+            <StatGrid>
+              <StatCard
+                title="Total Productos"
+                value={products.length}
+                icon={Package}
+              />
+              <StatCard
+                title="En Stock"
+                value={inStockProducts}
+                icon={TrendingUp}
+              />
+              <StatCard
+                title="Items en Carrito"
+                value="0"
+                icon={ShoppingCart}
+              />
+              <StatCard
+                title="Valor del Catálogo"
+                value={`$${totalRevenue.toLocaleString('es-AR')}`}
+                icon={DollarSign}
+              />
+            </StatGrid>
           </div>
         )
 
@@ -157,12 +217,11 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <AdminHeader />
-      <div className="flex">
-        <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-        <main className="flex-1 p-6">{renderContent()}</main>
-      </div>
-    </div>
+    <AdminLayout
+      header={<AdminHeader />}
+      sidebar={<AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />}
+    >
+      {renderContent()}
+    </AdminLayout>
   )
 }

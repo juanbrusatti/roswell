@@ -51,7 +51,7 @@ CREATE POLICY "Allow public access" ON storage.objects FOR SELECT USING (bucket_
 Creá un archivo `.env.local` en la raíz del proyecto:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://gcodsmnqzxzngesjprof.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-publica-aqui
 ```
 

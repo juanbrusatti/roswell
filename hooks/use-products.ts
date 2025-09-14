@@ -21,15 +21,15 @@ export function useProducts() {
       if (error) throw error
 
       // Convertir datos de Supabase al formato de la aplicación
-      const formattedProducts: Product[] = data.map(item => ({
+      const formattedProducts: Product[] = (data ?? []).map(item => ({
         id: item.id,
         title: item.title,
         description: item.description,
         price: item.price,
         category: item.category,
-        sizes: item.sizes,
-        colors: item.colors,
-        images: item.images,
+        sizes: item.sizes ?? [],
+        colors: item.colors ?? [],
+        images: item.images ?? [],
         inStock: item.in_stock,
         featured: item.featured,
         createdAt: new Date(item.created_at)
@@ -108,17 +108,22 @@ export function useProducts() {
       if (error) throw error
 
       // Actualizar estado local
-      setProducts(prev => prev.map(product => 
-        product.id === id ? { ...product, ...updates } : product
-      ))
+      setProducts(prev =>
+        prev.map(product =>
+          product.id === id ? { ...product, ...updates } : product
+        )
+      )
     } catch (err) {
       console.error('Error updating product:', err)
       throw new Error('Error al actualizar el producto')
     }
   }
 
-  // Eliminar producto
+  // Eliminar producto (con optimistic update)
   const deleteProduct = async (id: string) => {
+    // Primero actualizamos el estado local
+    setProducts(prev => prev.filter(product => product.id !== id))
+
     try {
       const { error } = await supabase
         .from('products')
@@ -126,9 +131,6 @@ export function useProducts() {
         .eq('id', id)
 
       if (error) throw error
-
-      // Actualizar estado local
-      setProducts(prev => prev.filter(product => product.id !== id))
     } catch (err) {
       console.error('Error deleting product:', err)
       throw new Error('Error al eliminar el producto')

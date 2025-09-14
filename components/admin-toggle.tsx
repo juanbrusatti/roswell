@@ -21,7 +21,7 @@ export function AdminToggle() {
           onClick={handleLogout}
           variant="destructive"
           size="sm"
-          className="fixed top-4 right-4 z-50"
+          className="fixed top-20 right-4 z-50 shadow-lg"
         >
           <LogOut className="w-4 h-4 mr-2" />
           Cerrar Sesión
@@ -36,7 +36,7 @@ export function AdminToggle() {
         onClick={() => setIsLoginModalOpen(true)}
         variant="secondary"
         size="sm"
-        className="fixed top-4 right-4 z-50 opacity-50 hover:opacity-100 transition-opacity"
+        className="fixed top-20 right-4 z-50 opacity-50 hover:opacity-100 transition-opacity shadow-lg"
       >
         <Shield className="w-4 h-4 mr-2" />
         Personal

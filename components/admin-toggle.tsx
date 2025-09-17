@@ -32,15 +32,18 @@ export function AdminToggle() {
 
   return (
     <>
-      <Button
-        onClick={() => setIsLoginModalOpen(true)}
-        variant="secondary"
-        size="sm"
-        className="fixed top-20 right-4 z-50 opacity-50 hover:opacity-100 transition-opacity shadow-lg"
-      >
-        <Shield className="w-4 h-4 mr-2" />
-        Personal
-      </Button>
+      {/* Botón Personal oculto por seguridad */}
+      <div className="hidden">
+        <Button
+          onClick={() => setIsLoginModalOpen(true)}
+          variant="secondary"
+          size="sm"
+          className="fixed top-20 right-4 z-50 opacity-50 hover:opacity-100 transition-opacity shadow-lg"
+        >
+          <Shield className="w-4 h-4 mr-2" />
+          Personal
+        </Button>
+      </div>
       
       <AdminLoginModal 
         isOpen={isLoginModalOpen} 

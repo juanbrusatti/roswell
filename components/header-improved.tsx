@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, ShoppingCart, Search, User } from "lucide-react"
 import { AdminToggle } from "./admin-toggle"
+import { SecretAdminAccess } from "./secret-admin-access"
 
 export function Header() {
   const { cart, isAdmin } = useStore()
@@ -65,10 +66,12 @@ export function Header() {
               <span className="sr-only">Carrito</span>
             </Button>
 
-            <Button variant="ghost" size="sm" className="h-9 px-3">
-              <User className="h-4 w-4" />
-              <span className="sr-only">Perfil</span>
-            </Button>
+            <SecretAdminAccess>
+              <Button variant="ghost" size="sm" className="h-9 px-3">
+                <User className="h-4 w-4" />
+                <span className="sr-only">Perfil</span>
+              </Button>
+            </SecretAdminAccess>
           </div>
 
           {/* Actions - Mobile */}
@@ -120,10 +123,12 @@ export function Header() {
                     <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                       Cuenta
                     </h3>
-                    <Button variant="outline" className="justify-start">
-                      <User className="h-4 w-4 mr-2" />
-                      Mi Perfil
-                    </Button>
+                    <SecretAdminAccess>
+                      <Button variant="outline" className="justify-start">
+                        <User className="h-4 w-4 mr-2" />
+                        Mi Perfil
+                      </Button>
+                    </SecretAdminAccess>
                     <Button variant="outline" className="justify-start">
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Mi Carrito ({cartItemsCount})

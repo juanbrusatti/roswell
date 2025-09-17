@@ -79,11 +79,6 @@ export function Footer() {
               </li>
               <li>
                 <a href="#" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
                   TikTok
                 </a>
               </li>

@@ -82,11 +82,6 @@ export function Footer() {
                   TikTok
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
-                  YouTube
-                </a>
-              </li>
             </ul>
           </div>
 

@@ -78,7 +78,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
+                <a href="https://www.tiktok.com/@roswell.ind" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
                   TikTok
                 </a>
               </li>

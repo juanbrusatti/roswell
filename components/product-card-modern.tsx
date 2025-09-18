@@ -16,13 +16,13 @@ export function ProductCard({ product }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false)
 
   return (
-    <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-white/80 via-white/60 to-white/40 backdrop-blur-sm hover:from-white/90 hover:via-white/70 hover:to-white/50 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-accent/20">
+    <Card className="group relative overflow-hidden border border-border/20 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-sm hover:from-card hover:via-card/90 hover:to-card/80 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-accent/10">
       {/* Bordes animados */}
       <div className="absolute inset-0 bg-gradient-to-r from-accent/20 via-transparent to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg" />
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-lg" />
       
       {/* Imagen del producto con overlay */}
-      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-muted/50 to-muted/30">
+      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-muted/30 to-muted/20">
         <Image
           src={product.images[0] || "/placeholder.svg"}
           alt={product.title}
@@ -121,10 +121,10 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Acciones primarias */}
         <div className="pt-4 border-t border-border/50"> 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"> 
-          <Button className="w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs">
-  <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-  <span className="truncate">Agregar al carrito</span>
-</Button>
+            <Button className="w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs text-white bg-white hover:bg-gray-100">
+              <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Agregar al carrito</span>
+            </Button>
 
 
             <Button variant="outline" className="w-full h-11 md:h-12 px-4 justify-center gap-2 text-xs md:text-sm">

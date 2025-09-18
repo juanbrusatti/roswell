@@ -6,7 +6,7 @@ import type { Product } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Zap } from "lucide-react"
+import { Heart, Star, Zap, ShoppingCart } from "lucide-react"
 
 interface ProductCardProps {
   product: Product
@@ -39,12 +39,6 @@ export function ProductCard({ product }: ProductCardProps) {
             <Badge className="bg-gradient-to-r from-accent to-accent/80 text-white border-0 shadow-lg backdrop-blur-sm animate-pulse">
               <Star className="w-3 h-3 mr-1" />
               Destacado
-            </Badge>
-          )}
-          {!product.inStock && (
-            <Badge variant="destructive" className="shadow-lg backdrop-blur-sm">
-              <Zap className="w-3 h-3 mr-1" />
-              Sin Stock
             </Badge>
           )}
         </div>
@@ -124,19 +118,18 @@ export function ProductCard({ product }: ProductCardProps) {
           </Badge>
         </div>
 
-        {/* Información adicional en capas */}
-        <div className="pt-3 border-t border-gradient-to-r from-transparent via-muted to-transparent">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-              <span className="flex items-center">
-                <div className="w-2 h-2 bg-accent rounded-full mr-2 animate-pulse" />
-                Envío gratis
-              </span>
-              <span className="flex items-center">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                Stock disponible
-              </span>
-            </div>
+        {/* Acciones primarias */}
+        <div className="pt-4 border-t border-border/50"> 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"> 
+          <Button className="w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs">
+  <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+  <span className="truncate">Agregar al carrito</span>
+</Button>
+
+
+            <Button variant="outline" className="w-full h-11 md:h-12 px-4 justify-center gap-2 text-xs md:text-sm">
+              Ver detalles
+            </Button>
           </div>
         </div>
       </CardContent>

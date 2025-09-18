@@ -58,11 +58,6 @@ export function ProductCard({ product }: ProductCardProps) {
               Destacado
             </Badge>
           )}
-          {!product.inStock && (
-            <Badge variant="destructive" className="text-xs">
-              Sin Stock
-            </Badge>
-          )}
         </div>
 
         {/* Botón de favoritos */}

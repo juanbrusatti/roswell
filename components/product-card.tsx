@@ -37,6 +37,9 @@ export function ProductCard({ product }: ProductCardProps) {
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {product.featured && <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">Destacado</Badge>}
+        {!product.inStock && (
+          <Badge variant="destructive" className="absolute top-3 left-24">Sin Stock</Badge>
+        )}
         <Button
           variant="ghost"
           size="sm"
@@ -99,7 +102,7 @@ export function ProductCard({ product }: ProductCardProps) {
           className="w-full"
         >
           <ShoppingCart className="w-4 h-4 mr-2" />
-          Agregar al Carrito
+          {product.inStock ? 'Agregar al Carrito' : 'Sin Stock'}
         </Button>
       </CardFooter>
     </Card>

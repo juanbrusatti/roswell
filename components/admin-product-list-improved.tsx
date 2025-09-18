@@ -9,9 +9,9 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Edit, Trash2, Eye, Search, Filter, MoreHorizontal } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Edit, Trash2, Search } from "lucide-react"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { useToast } from "@/hooks/use-toast"
 
 interface AdminProductListProps {
   onEditProduct: (productId: string) => void
@@ -22,15 +22,33 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
+  const { toast } = useToast()
+
+  const [productIdToDelete, setProductIdToDelete] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async (productId: string) => {
-    if (confirm("¿Estás seguro de que querés eliminar este producto?")) {
-      try {
-        await deleteProduct(productId)
-      } catch (error) {
-        console.error('Error deleting product:', error)
-        alert('Error al eliminar el producto')
-      }
+    setProductIdToDelete(productId)
+  }
+
+  const confirmDelete = async () => {
+    if (!productIdToDelete) return
+    setIsDeleting(true)
+    try {
+      await deleteProduct(productIdToDelete)
+      toast({
+        title: "Producto eliminado",
+        description: "El producto y sus imágenes fueron eliminados correctamente.",
+      })
+    } catch (error) {
+      console.error('Error deleting product:', error)
+      toast({
+        title: "Error al eliminar",
+        description: "No se pudo eliminar el producto. Intenta nuevamente.",
+      })
+    } finally {
+      setIsDeleting(false)
+      setProductIdToDelete(null)
     }
   }
 
@@ -134,7 +152,7 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                   <TableHead>Precio</TableHead>
                   <TableHead>Stock</TableHead>
                   <TableHead>Estado</TableHead>
-                  <TableHead className="w-[100px]">Acciones</TableHead>
+                  <TableHead className="w-[160px]">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -189,23 +207,16 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => onEditProduct(product.id)}>
-                            <Edit className="h-4 w-4 mr-2" />
-                            Editar
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDelete(product.id)}>
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Eliminar
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" onClick={() => onEditProduct(product.id)}>
+                          <Edit className="h-4 w-4 mr-2" />
+                          Editar
+                        </Button>
+                        <Button variant="destructive" size="sm" onClick={() => handleDelete(product.id)}>
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Eliminar
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -235,23 +246,16 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                             {product.description}
                           </p>
                         </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="ml-2">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => onEditProduct(product.id)}>
-                              <Edit className="h-4 w-4 mr-2" />
-                              Editar
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleDelete(product.id)}>
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Eliminar
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="flex items-center gap-2 ml-2">
+                          <Button variant="outline" size="sm" onClick={() => onEditProduct(product.id)}>
+                            <Edit className="h-4 w-4 mr-2" />
+                            Editar
+                          </Button>
+                          <Button variant="destructive" size="sm" onClick={() => handleDelete(product.id)}>
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Eliminar
+                          </Button>
+                        </div>
                       </div>
                       
                       <div className="mt-3 space-y-2">
@@ -297,6 +301,24 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
           )}
         </CardContent>
       </Card>
+
+      {/* Confirmación de eliminación */}
+      <AlertDialog open={productIdToDelete !== null} onOpenChange={(open) => !open && setProductIdToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar este producto?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción eliminará el producto de la base de datos y también borrará sus imágenes del almacenamiento. No se puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} disabled={isDeleting}>
+              {isDeleting ? 'Eliminando…' : 'Eliminar definitivamente'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

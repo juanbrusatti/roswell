@@ -4,75 +4,75 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated color tokens to match street/urban clothing store design brief */
-  --background: #ffffff;
-  --foreground: #1f2937;
-  --card: #f8fafc;
-  --card-foreground: #374151;
-  --popover: #ffffff;
-  --popover-foreground: #374151;
-  --primary: #374151;
-  --primary-foreground: #ffffff;
-  --secondary: #6366f1;
-  --secondary-foreground: #ffffff;
-  --muted: #f8fafc;
-  --muted-foreground: #1f2937;
+  /* Dark urban theme for Roswell streetwear brand */
+  --background: #0a0a0a;
+  --foreground: #f8fafc;
+  --card: #1a1a1a;
+  --card-foreground: #f1f5f9;
+  --popover: #1a1a1a;
+  --popover-foreground: #f1f5f9;
+  --primary: #f1f5f9;
+  --primary-foreground: #0a0a0a;
+  --secondary: #2d2d2d;
+  --secondary-foreground: #f1f5f9;
+  --muted: #262626;
+  --muted-foreground: #a1a1aa;
   --accent: #6366f1;
   --accent-foreground: #ffffff;
-  --destructive: #ea580c;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e5e7eb;
-  --input: #f8fafc;
+  --border: #404040;
+  --input: #262626;
   --ring: rgba(99, 102, 241, 0.5);
   --chart-1: #6366f1;
-  --chart-2: #ea580c;
-  --chart-3: #4b5563;
+  --chart-2: #ef4444;
+  --chart-3: #a1a1aa;
   --chart-4: #f97316;
-  --chart-5: #374151;
+  --chart-5: #f1f5f9;
   --radius: 0.5rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1f2937;
-  --sidebar-primary: #f8fafc;
-  --sidebar-primary-foreground: #374151;
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #262626;
+  --sidebar-primary-foreground: #f1f5f9;
   --sidebar-accent: #6366f1;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #e5e7eb;
+  --sidebar-border: #404040;
   --sidebar-ring: rgba(99, 102, 241, 0.5);
 }
 
 .dark {
-  /* Updated dark mode tokens for street/urban aesthetic */
-  --background: #1f2937;
+  /* Even darker theme for true dark mode */
+  --background: #000000;
   --foreground: #ffffff;
-  --card: #374151;
+  --card: #111111;
   --card-foreground: #ffffff;
-  --popover: #374151;
+  --popover: #111111;
   --popover-foreground: #ffffff;
   --primary: #ffffff;
-  --primary-foreground: #1f2937;
-  --secondary: #6366f1;
+  --primary-foreground: #000000;
+  --secondary: #1a1a1a;
   --secondary-foreground: #ffffff;
-  --muted: #4b5563;
-  --muted-foreground: #d1d5db;
+  --muted: #1a1a1a;
+  --muted-foreground: #71717a;
   --accent: #6366f1;
   --accent-foreground: #ffffff;
-  --destructive: #ea580c;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #4b5563;
-  --input: #374151;
+  --border: #262626;
+  --input: #1a1a1a;
   --ring: rgba(99, 102, 241, 0.5);
   --chart-1: #6366f1;
-  --chart-2: #ea580c;
-  --chart-3: #9ca3af;
+  --chart-2: #ef4444;
+  --chart-3: #71717a;
   --chart-4: #f97316;
-  --chart-5: #d1d5db;
-  --sidebar: #374151;
+  --chart-5: #ffffff;
+  --sidebar: #111111;
   --sidebar-foreground: #ffffff;
-  --sidebar-primary: #4b5563;
+  --sidebar-primary: #1a1a1a;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #6366f1;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #4b5563;
+  --sidebar-border: #262626;
   --sidebar-ring: rgba(99, 102, 241, 0.5);
 }
 
@@ -123,6 +123,32 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #0a0a0a !important;
+    color: #f8fafc !important;
+  }
+  html {
+    background-color: #0a0a0a !important;
+  }
+  
+  /* Forzar tema oscuro en elementos principales */
+  .container, main, section, div[class*="bg-background"] {
+    background-color: #0a0a0a !important;
+  }
+  
+  /* Cards y elementos con fondo */
+  .card, [class*="bg-card"], [class*="bg-white"] {
+    background-color: #1a1a1a !important;
+    border-color: #404040 !important;
+  }
+  
+  /* Texto principal */
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    color: #f8fafc !important;
+  }
+  
+  /* Enlaces */
+  a {
+    color: #f8fafc !important;
   }
 }
 
@@ -147,6 +173,17 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-up-stagger {
+    from {
+      opacity: 0;
+      transform: translateY(60px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
   }
 
@@ -186,6 +223,11 @@
 
   .animate-slide-up {
     animation: slide-up ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-up-stagger {
+    animation: slide-up-stagger ease-out forwards;
     opacity: 0;
   }
 

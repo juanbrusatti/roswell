@@ -41,12 +41,6 @@ export function ProductCard({ product }: ProductCardProps) {
               Destacado
             </Badge>
           )}
-          {!product.inStock && (
-            <Badge variant="destructive" className="shadow-lg backdrop-blur-sm">
-              <Zap className="w-3 h-3 mr-1" />
-              Sin Stock
-            </Badge>
-          )}
         </div>
 
         {/* Botón de favoritos flotante */}
@@ -124,21 +118,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </Badge>
         </div>
 
-        {/* Información adicional en capas */}
-        <div className="pt-3 border-t border-gradient-to-r from-transparent via-muted to-transparent">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-              <span className="flex items-center">
-                <div className="w-2 h-2 bg-accent rounded-full mr-2 animate-pulse" />
-                Envío gratis
-              </span>
-              <span className="flex items-center">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                Stock disponible
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* Información adicional en capas (removida por pedido) */}
       </CardContent>
     </Card>
   )

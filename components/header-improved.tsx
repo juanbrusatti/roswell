@@ -99,8 +99,11 @@ export function Header() {
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                <div className="flex flex-col space-y-6 mt-8">
+              <SheetContent 
+                side="right" 
+                className="w-[300px] sm:w-[400px] bg-transparent border-none p-0"
+              >
+                <div className="glass-sidebar h-full w-full flex flex-col space-y-6 p-6">
                   {/* Navigation */}
                   <nav className="flex flex-col space-y-4">
                     <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
@@ -110,7 +113,7 @@ export function Header() {
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="text-lg font-medium text-foreground hover:text-accent transition-colors"
+                        className="text-lg font-medium text-foreground hover:text-accent transition-all duration-300 hover:translate-x-2 px-3 py-2 rounded-lg hover:bg-white/5"
                         onClick={() => setIsOpen(false)}
                       >
                         {item.name}
@@ -124,12 +127,12 @@ export function Header() {
                       Cuenta
                     </h3>
                     <SecretAdminAccess>
-                      <Button variant="outline" className="justify-start">
+                      <Button variant="outline" className="justify-start rounded-xl bg-white/10 border-white/20 hover:bg-white/20 backdrop-blur-sm">
                         <User className="h-4 w-4 mr-2" />
                         Mi Perfil
                       </Button>
                     </SecretAdminAccess>
-                    <Button variant="outline" className="justify-start">
+                    <Button variant="outline" className="justify-start rounded-xl bg-white/10 border-white/20 hover:bg-white/20 backdrop-blur-sm">
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Mi Carrito ({cartItemsCount})
                     </Button>

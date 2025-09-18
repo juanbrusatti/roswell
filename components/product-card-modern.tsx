@@ -6,7 +6,7 @@ import type { Product } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Zap } from "lucide-react"
+import { Heart, Star, Zap, ShoppingCart } from "lucide-react"
 
 interface ProductCardProps {
   product: Product
@@ -118,7 +118,20 @@ export function ProductCard({ product }: ProductCardProps) {
           </Badge>
         </div>
 
-        {/* Información adicional en capas (removida por pedido) */}
+        {/* Acciones primarias */}
+        <div className="pt-4 border-t border-border/50"> 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"> 
+          <Button className="w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs">
+  <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+  <span className="truncate">Agregar al carrito</span>
+</Button>
+
+
+            <Button variant="outline" className="w-full h-11 md:h-12 px-4 justify-center gap-2 text-xs md:text-sm">
+              Ver detalles
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

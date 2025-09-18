@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'Roswell - Indumentaria Urbana',
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
+        <Toaster />
         <Analytics />
       </body>
     </html>

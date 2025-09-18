@@ -123,12 +123,56 @@ export function useProducts() {
     }
   }
 
-  // Eliminar producto (con optimistic update)
+  // Eliminar producto (borra imágenes del storage y registro en DB)
   const deleteProduct = async (id: string) => {
-    // Primero actualizamos el estado local
+    // Buscar producto para obtener sus imágenes antes de eliminarlo
+    const productToDelete = products.find(p => p.id === id)
+
+    // Optimistic update: quitar del estado local
     setProducts(prev => prev.filter(product => product.id !== id))
 
     try {
+      // 1) Borrar imágenes asociadas del bucket si existen
+      if (productToDelete?.images && productToDelete.images.length > 0) {
+        // Convertir URLs públicas a paths relativos dentro del bucket
+        const toBucketPath = (url: string): string | null => {
+          try {
+            if (!url) return null
+            // Si ya parece ser un path (no comienza con http), devolver tal cual
+            if (!url.startsWith('http')) return url
+            const publicPrefix = '/storage/v1/object/public/product-images/'
+            const idx = url.indexOf(publicPrefix)
+            if (idx !== -1) return url.substring(idx + publicPrefix.length)
+            // Prefijo alternativo (algunas configuraciones)
+            const altPrefix = '/object/public/product-images/'
+            const idxAlt = url.indexOf(altPrefix)
+            if (idxAlt !== -1) return url.substring(idxAlt + altPrefix.length)
+            // Fallback: tomar los últimos 2 segmentos como carpeta/archivo
+            const parts = url.split('/')
+            if (parts.length >= 2) return parts.slice(-2).join('/')
+            return null
+          } catch {
+            return null
+          }
+        }
+
+        const paths = productToDelete.images
+          .map(toBucketPath)
+          .filter((p): p is string => Boolean(p))
+
+        if (paths.length > 0) {
+          const { error: removeError } = await supabase.storage
+            .from('product-images')
+            .remove(paths)
+
+          if (removeError) {
+            // No frenamos el flujo por esto, pero lo registramos
+            console.error('Error eliminando imágenes del storage:', removeError)
+          }
+        }
+      }
+
+      // 2) Borrar registro de la tabla products
       const { error } = await supabase
         .from('products')
         .delete()
@@ -137,6 +181,8 @@ export function useProducts() {
       if (error) throw error
     } catch (err) {
       console.error('Error deleting product:', err)
+      // Re-sincronizar estado por si el optimistic update desincronizó
+      await fetchProducts()
       throw new Error('Error al eliminar el producto')
     }
   }

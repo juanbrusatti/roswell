@@ -196,7 +196,10 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
-                        <Badge variant={product.inStock ? "default" : "destructive"}>
+                        <Badge 
+                          variant={product.inStock ? "default" : "destructive"}
+                          className={product.inStock ? "bg-green-600 text-white hover:bg-green-700" : ""}
+                        >
                           {product.inStock ? "En Stock" : "Sin Stock"}
                         </Badge>
                         {product.featured && (
@@ -273,7 +276,10 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                         </div>
                         
                         <div className="flex items-center gap-2">
-                          <Badge variant={product.inStock ? "default" : "destructive"} className="text-xs">
+                          <Badge 
+                            variant={product.inStock ? "default" : "destructive"} 
+                            className={`text-xs ${product.inStock ? "bg-green-600 text-white hover:bg-green-700" : ""}`}
+                          >
                             {product.inStock ? "En Stock" : "Sin Stock"}
                           </Badge>
                           {product.featured && (

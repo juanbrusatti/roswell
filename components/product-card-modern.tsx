@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import type { Product } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,12 +15,24 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false)
+  const router = useRouter()
+
+  const handleViewDetails = () => {
+    console.log('Botón Ver detalles clickeado para producto:', product.id)
+    router.push(`/product/${product.id}`)
+  }
 
   return (
-    <Card className="group relative overflow-hidden border border-border/20 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-sm hover:from-card hover:via-card/90 hover:to-card/80 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-accent/10">
+    <Card 
+      className="group relative overflow-hidden border border-border/20 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-sm hover:from-card hover:via-card/90 hover:to-card/80 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-accent/10 cursor-pointer"
+      onClick={() => {
+        console.log('Card clickeada para producto:', product.id)
+        router.push(`/product/${product.id}`)
+      }}
+    >
       {/* Bordes animados */}
-      <div className="absolute inset-0 bg-gradient-to-r from-accent/20 via-transparent to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg" />
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-lg" />
+      <div className="absolute inset-0 bg-gradient-to-r from-accent/20 via-transparent to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-lg pointer-events-none" />
       
       {/* Imagen del producto con overlay */}
       <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-muted/30 to-muted/20">
@@ -50,7 +63,10 @@ export function ProductCard({ product }: ProductCardProps) {
           className={`absolute top-4 right-4 h-10 w-10 p-0 bg-white/20 backdrop-blur-md hover:bg-white/30 border border-white/30 transition-all duration-300 ${
             isLiked ? "text-red-500 bg-red-500/20" : "text-white hover:text-red-400"
           }`}
-          onClick={() => setIsLiked(!isLiked)}
+          onClick={(e) => {
+            e.stopPropagation()
+            setIsLiked(!isLiked)
+          }}
         >
           <Heart className={`h-4 w-4 transition-all duration-300 ${isLiked ? "fill-current scale-110" : ""}`} />
         </Button>
@@ -71,7 +87,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Contenido principal con layout asimétrico */}
-      <CardContent className="p-6 space-y-4">
+      <CardContent className="p-6 space-y-4 relative z-10">
         {/* Título y categoría con jerarquía clara */}
         <div className="space-y-3">
           <div className="flex items-start justify-between">
@@ -121,13 +137,27 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Acciones primarias */}
         <div className="pt-4 border-t border-border/50"> 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"> 
-            <Button className="w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs text-white bg-white hover:bg-gray-100">
+            <Button 
+              className="w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs text-white bg-white hover:bg-gray-100"
+              onClick={(e) => {
+                e.stopPropagation()
+                console.log('Botón Agregar al carrito clickeado')
+              }}
+            >
               <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate">Agregar al carrito</span>
             </Button>
 
 
-            <Button variant="outline" className="w-full h-11 md:h-12 px-4 justify-center gap-2 text-xs md:text-sm">
+            <Button 
+              variant="outline" 
+              className="w-full h-11 md:h-12 px-4 justify-center gap-2 text-xs md:text-sm relative z-10"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                handleViewDetails()
+              }}
+            >
               Ver detalles
             </Button>
           </div>

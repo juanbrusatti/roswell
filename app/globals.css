@@ -503,3 +503,23 @@
 .button-shake {
   animation: button-shake 0.5s ease-in-out forwards;
 }
+
+/* Optimizaciones para parallax scrolling */
+.parallax-container {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.parallax-background {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.parallax-content {
+  will-change: opacity, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

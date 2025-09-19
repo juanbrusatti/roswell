@@ -17,10 +17,7 @@ export function UserIconClickHandler({ children }: UserIconClickHandlerProps) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleClick = () => {
-    console.log('🔍 UserIconClickHandler clicked')
-    console.log('🔍 isAdmin:', isAdmin, 'isAuthenticated:', isAuthenticated)
-    console.log('🔍 Current showLogout:', showLogout)
-    
+
     if (isAdmin && isAuthenticated) {
       // Si ya está autenticado, mostrar/ocultar logout
       console.log('✅ Admin authenticated, toggling logout button')
@@ -37,7 +34,7 @@ export function UserIconClickHandler({ children }: UserIconClickHandlerProps) {
       
       // Si llegamos a 5 clicks, abrir modal
       if (clickCount + 1 >= 5) {
-        console.log('🎯 5 clicks reached, opening login modal')
+
         setIsLoginModalOpen(true)
         setClickCount(0)
         return

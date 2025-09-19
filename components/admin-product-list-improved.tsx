@@ -143,7 +143,7 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
       <Card>
         <CardContent className="p-0">
           {/* Vista de escritorio */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -170,7 +170,7 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="font-medium truncate">{product.title}</div>
-                          <div className="text-sm text-muted-foreground line-clamp-1">
+                          <div className="text-sm text-muted-foreground line-clamp-1 max-w-[200px]">
                             {product.description}
                           </div>
                         </div>

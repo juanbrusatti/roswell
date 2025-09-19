@@ -44,6 +44,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
 
   const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "coats", "accessories", "shoes"]
   const commonSizes = ["XS", "S", "M", "L", "XL", "XXL"]
+  const pantsSizes = Array.from({ length: 21 }, (_, i) => (30 + i).toString()) // 30, 31, 32... hasta 50
   const commonColors = ["Negro", "Blanco", "Gris", "Azul Marino", "Rojo", "Azul", "Verde", "Marrón"]
 
   useEffect(() => {
@@ -305,16 +306,18 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Talles Disponibles</CardTitle>
+              <CardTitle className="text-lg">
+                {formData.category === 'pants' ? 'Números Disponibles' : 'Talles Disponibles'}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-2">
                 <Select value={newSize} onValueChange={setNewSize}>
                   <SelectTrigger className="flex-1 text-sm">
-                    <SelectValue placeholder="Seleccioná un talle" />
+                    <SelectValue placeholder={formData.category === 'pants' ? "Seleccioná un número" : "Seleccioná un talle"} />
                   </SelectTrigger>
                   <SelectContent>
-                    {commonSizes.map((size) => (
+                    {(formData.category === 'pants' ? pantsSizes : commonSizes).map((size) => (
                       <SelectItem key={size} value={size}>
                         {size}
                       </SelectItem>

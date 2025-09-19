@@ -42,6 +42,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
 
   const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "coats", "accessories", "shoes"]
   const commonSizes = ["XS", "S", "M", "L", "XL", "XXL"]
+  const pantsSizes = Array.from({ length: 21 }, (_, i) => (30 + i).toString()) // 30, 31, 32... hasta 50
   const commonColors = ["Negro", "Blanco", "Gris", "Azul Marino", "Rojo", "Azul", "Verde", "Marrón"]
 
   useEffect(() => {
@@ -231,15 +232,15 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label>Talles Disponibles</Label>
+              <Label>{formData.category === 'pants' ? 'Números Disponibles' : 'Talles Disponibles'}</Label>
               <div className="space-y-2">
                 <div className="flex space-x-2">
                   <Select value={newSize} onValueChange={setNewSize}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Seleccioná un talle" />
+                      <SelectValue placeholder={formData.category === 'pants' ? "Seleccioná un número" : "Seleccioná un talle"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {commonSizes.map((size) => (
+                      {(formData.category === 'pants' ? pantsSizes : commonSizes).map((size) => (
                         <SelectItem key={size} value={size}>
                           {size}
                         </SelectItem>

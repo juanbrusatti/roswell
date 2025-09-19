@@ -8,14 +8,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { ShoppingCart, Plus, Minus, Trash2, ShoppingBag, MessageCircle } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ShoppingCart, Plus, Minus, Trash2, ShoppingBag, MessageCircle, ChevronDown } from "lucide-react"
 
 interface CartSidebarProps {
   children: React.ReactNode
 }
 
 export function CartSidebar({ children }: CartSidebarProps) {
-  const { cart, removeFromCart, updateCartQuantity, clearCart } = useStore()
+  const { cart, removeFromCart, updateCartQuantity, clearCart, addToCart } = useStore()
   const [isOpen, setIsOpen] = useState(false)
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
@@ -31,6 +32,34 @@ export function CartSidebar({ children }: CartSidebarProps) {
 
   const handleRemoveItem = (productId: string, size: string, color: string) => {
     removeFromCart(productId, size, color)
+  }
+
+  const handleUpdateItemSize = (productId: string, oldSize: string, oldColor: string, newSize: string) => {
+    // Buscar el item actual
+    const currentItem = cart.find(item => 
+      item.product.id === productId && item.size === oldSize && item.color === oldColor
+    )
+    
+    if (currentItem) {
+      // Remover el item actual
+      removeFromCart(productId, oldSize, oldColor)
+      // Agregar el item con el nuevo talle
+      addToCart(currentItem.product, newSize, oldColor, currentItem.quantity)
+    }
+  }
+
+  const handleUpdateItemColor = (productId: string, oldSize: string, oldColor: string, newColor: string) => {
+    // Buscar el item actual
+    const currentItem = cart.find(item => 
+      item.product.id === productId && item.size === oldSize && item.color === oldColor
+    )
+    
+    if (currentItem) {
+      // Remover el item actual
+      removeFromCart(productId, oldSize, oldColor)
+      // Agregar el item con el nuevo color
+      addToCart(currentItem.product, oldSize, newColor, currentItem.quantity)
+    }
   }
 
   const handleCheckout = () => {
@@ -51,7 +80,7 @@ export function CartSidebar({ children }: CartSidebarProps) {
     }
 
     const message = generateWhatsAppMessage()
-    const phoneNumber = "543584178955" // Número sin el + para WhatsApp
+    const phoneNumber = "543584388196" // Número sin el + para WhatsApp
     const encodedMessage = encodeURIComponent(message)
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
     
@@ -118,12 +147,37 @@ export function CartSidebar({ children }: CartSidebarProps) {
                               {item.product.title}
                             </h4>
                             <div className="flex items-center gap-2 mt-1">
-                              <Badge variant="outline" className="text-xs">
-                                {item.size}
-                              </Badge>
-                              <Badge variant="outline" className="text-xs">
-                                {item.color}
-                              </Badge>
+                              <Select 
+                                value={item.size} 
+                                onValueChange={(newSize) => handleUpdateItemSize(item.product.id, item.size, item.color, newSize)}
+                              >
+                                <SelectTrigger className="h-6 w-16 text-xs">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {item.product.sizes.map((size) => (
+                                    <SelectItem key={size} value={size} className="text-xs">
+                                      {size}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              
+                              <Select 
+                                value={item.color} 
+                                onValueChange={(newColor) => handleUpdateItemColor(item.product.id, item.size, item.color, newColor)}
+                              >
+                                <SelectTrigger className="h-6 w-20 text-xs">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {item.product.colors.map((color) => (
+                                    <SelectItem key={color} value={color} className="text-xs">
+                                      {color}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
                           </div>
 

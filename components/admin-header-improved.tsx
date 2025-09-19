@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Package, BarChart3, Settings, Bell, User } from "lucide-react"
-import { AdminToggle } from "./admin-toggle"
+import { AdminLogoutButton } from "./admin-logout-button"
 
 export function AdminHeader() {
   const { products } = useStore()
@@ -67,10 +67,8 @@ export function AdminHeader() {
               <span className="text-sm">Config</span>
             </Button>
 
-            {/* Perfil */}
-            <Button variant="ghost" size="sm">
-              <User className="h-4 w-4" />
-            </Button>
+            {/* Logout */}
+            <AdminLogoutButton />
           </div>
         </div>
 
@@ -91,8 +89,6 @@ export function AdminHeader() {
           </div>
         </div>
       </div>
-      
-      <AdminToggle />
     </header>
   )
 }

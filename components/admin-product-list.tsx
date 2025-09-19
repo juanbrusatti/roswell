@@ -32,7 +32,8 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
         <CardTitle>Gestión de Productos</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
+        <div className="overflow-x-auto">
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Producto</TableHead>
@@ -56,9 +57,9 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                         className="object-cover"
                       />
                     </div>
-                    <div>
-                      <div className="font-medium">{product.title}</div>
-                      <div className="text-sm text-muted-foreground line-clamp-1">{product.description}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-medium truncate">{product.title}</div>
+                      <div className="text-sm text-muted-foreground line-clamp-1 max-w-[200px]">{product.description}</div>
                     </div>
                   </div>
                 </TableCell>
@@ -105,6 +106,7 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
             ))}
           </TableBody>
         </Table>
+        </div>
       </CardContent>
     </Card>
   )

@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { ShoppingCart, Plus, Minus, Trash2, ShoppingBag } from "lucide-react"
+import { ShoppingCart, Plus, Minus, Trash2, ShoppingBag, MessageCircle } from "lucide-react"
 
 interface CartSidebarProps {
   children: React.ReactNode
@@ -34,9 +34,31 @@ export function CartSidebar({ children }: CartSidebarProps) {
   }
 
   const handleCheckout = () => {
-    // Aquí iría la lógica de checkout
-    console.log('Proceder al checkout con:', cart)
-    // Por ahora solo cerramos el carrito
+    // Generar mensaje personalizado para WhatsApp
+    const generateWhatsAppMessage = () => {
+      let message = "¡Hola! 👋\n\nQuiero hacer un pedido de los siguientes productos:\n\n"
+      
+      cart.forEach((item, index) => {
+        message += `🛍️ *${item.product.title}*\n`
+        message += `   📏 Talle: ${item.size}\n`
+        message += `   🎨 Color: ${item.color}\n`
+        message += `   📦 Cantidad: ${item.quantity}\n\n`
+      })
+      
+      message += "¿Están disponibles estos productos? ¿Cómo puedo proceder con el pedido?\n\n¡Gracias! 🙏"
+      
+      return message
+    }
+
+    const message = generateWhatsAppMessage()
+    const phoneNumber = "543584178955" // Número sin el + para WhatsApp
+    const encodedMessage = encodeURIComponent(message)
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+    
+    // Abrir WhatsApp en nueva pestaña
+    window.open(whatsappUrl, '_blank')
+    
+    // Cerrar el carrito después de enviar
     setIsOpen(false)
   }
 
@@ -181,11 +203,11 @@ export function CartSidebar({ children }: CartSidebarProps) {
                     </Button>
                     <Button
                       size="sm"
-                      className="flex-1 bg-accent hover:bg-accent/90"
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                       onClick={handleCheckout}
                     >
-                      <ShoppingBag className="h-4 w-4 mr-2" />
-                      Hacer Pedido
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      Pedir por WhatsApp
                     </Button>
                   </div>
                 </div>

@@ -4,49 +4,6 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import type { Product, CartItem } from "./types"
 
-// Datos de productos de demostración
-const mockProducts: Product[] = [
-  {
-    id: "1",
-    title: "Buzo Oversized Urbano",
-    description: "Buzo de algodón premium con gráficos inspirados en la calle. Perfecto para usar en capas y para el día a día.",
-    price: 89999,
-    images: ["/urban-oversized-hoodie-streetwear.jpg"],
-    category: "hoodies",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Negro", "Blanco", "Gris"],
-    inStock: true,
-    featured: true,
-    createdAt: new Date(),
-  },
-  {
-    id: "2",
-    title: "Remera Gráfica Street",
-    description: "Remera con diseño gráfico audaz inspirado en el arte callejero. Hecha de algodón orgánico sustentable.",
-    price: 34999,
-    images: ["/street-graphic-tee-urban-design.jpg"],
-    category: "tshirts",
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Negro", "Blanco", "Azul Marino"],
-    inStock: true,
-    featured: true,
-    createdAt: new Date(),
-  },
-  {
-    id: "3",
-    title: "Jogging Cargo",
-    description: "Jogging cargo cómodo con múltiples bolsillos. Perfecta combinación de estilo y funcionalidad.",
-    price: 79999,
-    images: ["/cargo-joggers-streetwear-pants.jpg"],
-    category: "pants",
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Negro", "Verde Oliva", "Gris"],
-    inStock: true,
-    featured: false,
-    createdAt: new Date(),
-  },
-]
-
 interface ProductStore {
   products: Product[]
   cart: CartItem[]
@@ -72,7 +29,7 @@ const ADMIN_CREDENTIALS = {
 export const useStore = create<ProductStore>()(
   persist(
     (set, get) => ({
-      products: mockProducts,
+      products: [], // Array vacío - los productos se cargan desde Supabase
       cart: [],
       isAdmin: false,
       isAuthenticated: false,

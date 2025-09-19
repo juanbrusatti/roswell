@@ -63,7 +63,7 @@ export function HeroSection() {
       >
         <HeroContent
           title="ROSWELL"
-          subtitle="URBANO"
+          subtitle="INDUMENTARIA"
           description="Indumentaria urbana auténtica para la generación de la calle. Expresa tu estilo único con nuestra colección curada de buzos, remeras y accesorios que definen la cultura streetwear."
           primaryButtonText="Ver Colección"
           primaryButtonHref="#featured-products"

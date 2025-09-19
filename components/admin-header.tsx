@@ -4,7 +4,6 @@ import { useStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Package, BarChart3, Settings } from "lucide-react"
-import { AdminToggle } from "./admin-toggle"
 
 export function AdminHeader() {
   const { products } = useStore()
@@ -31,7 +30,6 @@ export function AdminHeader() {
           </Button>
         </div>
       </div>
-      <AdminToggle />
     </header>
   )
 }

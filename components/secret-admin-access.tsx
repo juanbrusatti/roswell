@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { useStore } from "@/lib/store"
 import { AdminLoginModal } from "./admin-login-modal"
 
 interface SecretAdminAccessProps {
@@ -9,11 +10,17 @@ interface SecretAdminAccessProps {
 }
 
 export function SecretAdminAccess({ children, className }: SecretAdminAccessProps) {
+  const { isAdmin, isAuthenticated } = useStore()
   const [clickCount, setClickCount] = useState(0)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleClick = () => {
+    // Si ya está autenticado como admin, no hacer nada (el logout se maneja en AdminToggle)
+    if (isAdmin && isAuthenticated) {
+      return
+    }
+
     setClickCount(prev => prev + 1)
     
     // Limpiar timeout anterior

@@ -101,6 +101,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {product.category === 'hoodies' ? 'Buzos' : 
                product.category === 'tshirts' ? 'Remeras' : 
                product.category === 'pants' ? 'Pantalones' : 
+               product.category === 'coats' ? 'Abrigos' :
                product.category === 'accessories' ? 'Accesorios' : 
                product.category === 'shoes' ? 'Zapatillas' : product.category}
             </Badge>

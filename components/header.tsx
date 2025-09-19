@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, ShoppingCart, Search } from "lucide-react"
-import { AdminToggle } from "./admin-toggle"
 
 export function Header() {
   const { cart, isAdmin } = useStore()
@@ -86,8 +85,6 @@ export function Header() {
           </Sheet>
         </div>
       </div>
-
-      <AdminToggle />
     </header>
   )
 }

@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, ShoppingCart, Search, User } from "lucide-react"
-import { AdminToggle } from "./admin-toggle"
 import { SecretAdminAccess } from "./secret-admin-access"
+import { AdminLogoutButton } from "./admin-logout-button"
 
 export function Header() {
   const { cart, isAdmin } = useStore()
@@ -21,6 +21,7 @@ export function Header() {
     { name: "Buzos", href: "/buzos" },
     { name: "Remeras", href: "/remeras" },
     { name: "Pantalones", href: "/pantalones" },
+    { name: "Abrigos", href: "/abrigos" },
     { name: "Accesorios", href: "/accesorios" },
   ]
 
@@ -72,6 +73,7 @@ export function Header() {
                 <span className="sr-only">Perfil</span>
               </Button>
             </SecretAdminAccess>
+            <AdminLogoutButton />
           </div>
 
           {/* Actions - Mobile */}
@@ -132,6 +134,7 @@ export function Header() {
                         Mi Perfil
                       </Button>
                     </SecretAdminAccess>
+                    <AdminLogoutButton />
                     <Button variant="outline" className="justify-start rounded-xl bg-white/10 border-white/20 hover:bg-white/20 backdrop-blur-sm">
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Mi Carrito ({cartItemsCount})
@@ -144,7 +147,6 @@ export function Header() {
         </div>
       </div>
 
-      <AdminToggle />
     </header>
   )
 }

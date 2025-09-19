@@ -3,7 +3,8 @@
 import { useStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Package, BarChart3, Settings } from "lucide-react"
+import { Package, BarChart3, Settings, LogOut } from "lucide-react"
+import { AdminLogoutButton } from "./admin-logout-button"
 
 export function AdminHeader() {
   const { products } = useStore()
@@ -28,6 +29,7 @@ export function AdminHeader() {
             <Settings className="h-4 w-4 mr-2" />
             Configuración
           </Button>
+          <AdminLogoutButton />
         </div>
       </div>
     </header>

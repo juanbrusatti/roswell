@@ -42,7 +42,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<string[]>([])
 
-  const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "accessories", "shoes"]
+  const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "coats", "accessories", "shoes"]
   const commonSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const commonColors = ["Negro", "Blanco", "Gris", "Azul Marino", "Rojo", "Azul", "Verde", "Marrón"]
 
@@ -237,6 +237,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                         {category === 'hoodies' ? 'Buzos' : 
                          category === 'tshirts' ? 'Remeras' : 
                          category === 'pants' ? 'Pantalones' : 
+                         category === 'coats' ? 'Abrigos' :
                          category === 'accessories' ? 'Accesorios' : 
                          category === 'shoes' ? 'Zapatillas' : category}
                       </SelectItem>

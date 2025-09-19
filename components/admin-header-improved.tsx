@@ -25,7 +25,7 @@ export function AdminHeader() {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-foreground">Panel Admin</h1>
-                <p className="text-xs text-muted-foreground">Roswell Urbano</p>
+                <p className="text-xs text-muted-foreground">Roswell Indumentaria</p>
               </div>
             </div>
             

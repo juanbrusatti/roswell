@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Heart, Star, Zap, ShoppingCart } from "lucide-react"
+import { useStore } from "@/lib/store"
 
 interface ProductCardProps {
   product: Product
@@ -15,11 +16,46 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
   const router = useRouter()
+  const { addToCart } = useStore()
 
   const handleViewDetails = () => {
     console.log('Botón Ver detalles clickeado para producto:', product.id)
     router.push(`/product/${product.id}`)
+  }
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    console.log('Botón Agregar al carrito clickeado')
+    
+    if (isAnimating || !product.inStock) return
+    
+    setIsAnimating(true)
+    
+    // Agregar al carrito (usando el primer talle y color disponible)
+    const defaultSize = product.sizes[0] || 'M'
+    const defaultColor = product.colors[0] || 'Negro'
+    addToCart(product, defaultSize, defaultColor, 1)
+    
+    // Secuencia de animaciones: wheelie -> crash -> reset
+    setTimeout(() => {
+      // Cambiar a animación de crash después del wheelie
+      const cartIcon = document.querySelector('.cart-animation')
+      if (cartIcon) {
+        cartIcon.classList.remove('cart-animation')
+        cartIcon.classList.add('cart-crash')
+      }
+    }, 600) // Después del wheelie
+    
+    // Resetear la animación después de que termine todo
+    setTimeout(() => {
+      setIsAnimating(false)
+      const cartIcon = document.querySelector('.cart-crash')
+      if (cartIcon) {
+        cartIcon.classList.remove('cart-crash')
+      }
+    }, 1000) // Duración total de la animación
   }
 
   return (
@@ -139,14 +175,20 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="pt-4 border-t border-border/50"> 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"> 
             <Button 
-              className="w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs text-white bg-white hover:bg-gray-100"
-              onClick={(e) => {
-                e.stopPropagation()
-                console.log('Botón Agregar al carrito clickeado')
-              }}
+              className={`w-full h-11 md:h-12 px-2 justify-center gap-1.5 shadow-sm text-xs relative overflow-hidden ${
+                isAnimating ? 'button-shake' : ''
+              } ${
+                !product.inStock 
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                  : 'text-white bg-white hover:bg-gray-100'
+              }`}
+              onClick={handleAddToCart}
+              disabled={isAnimating || !product.inStock}
             >
-              <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate">Agregar al carrito</span>
+              <ShoppingCart className={`w-3.5 h-3.5 shrink-0 ${isAnimating ? 'cart-animation' : ''}`} />
+              <span className={`truncate ${isAnimating ? 'text-bounce' : ''}`}>
+                {!product.inStock ? 'Sin Stock' : 'Agregar al carrito'}
+              </span>
             </Button>
 
 

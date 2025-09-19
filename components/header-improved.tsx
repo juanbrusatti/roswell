@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, ShoppingCart, Search, User } from "lucide-react"
 import { SecretAdminAccess } from "./secret-admin-access"
 import { AdminLogoutButton } from "./admin-logout-button"
+import { CartSidebar } from "./cart-sidebar"
 
 export function Header() {
   const { cart, isAdmin } = useStore()
@@ -54,18 +55,20 @@ export function Header() {
               <span className="sr-only">Buscar</span>
             </Button>
 
-            <Button variant="ghost" size="sm" className="h-9 px-3 relative">
-              <ShoppingCart className="h-4 w-4" />
-              {cartItemsCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                >
-                  {cartItemsCount}
-                </Badge>
-              )}
-              <span className="sr-only">Carrito</span>
-            </Button>
+            <CartSidebar>
+              <Button variant="ghost" size="sm" className="h-9 px-3 relative">
+                <ShoppingCart className="h-4 w-4" />
+                {cartItemsCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                  >
+                    {cartItemsCount}
+                  </Badge>
+                )}
+                <span className="sr-only">Carrito</span>
+              </Button>
+            </CartSidebar>
 
             <SecretAdminAccess>
               <Button variant="ghost" size="sm" className="h-9 px-3">
@@ -82,17 +85,19 @@ export function Header() {
               <Search className="h-4 w-4" />
             </Button>
 
-            <Button variant="ghost" size="sm" className="h-9 w-9 p-0 relative">
-              <ShoppingCart className="h-4 w-4" />
-              {cartItemsCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 text-xs"
-                >
-                  {cartItemsCount}
-                </Badge>
-              )}
-            </Button>
+            <CartSidebar>
+              <Button variant="ghost" size="sm" className="h-9 w-9 p-0 relative">
+                <ShoppingCart className="h-4 w-4" />
+                {cartItemsCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 text-xs"
+                  >
+                    {cartItemsCount}
+                  </Badge>
+                )}
+              </Button>
+            </CartSidebar>
 
             {/* Mobile Menu */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>

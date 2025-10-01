@@ -43,7 +43,12 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
   const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "shirts", "shorts", "accessories", "shoes"]
   const commonSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const pantsSizes = Array.from({ length: 21 }, (_, i) => (30 + i).toString()) // 30, 31, 32... hasta 50
-  const commonColors = ["Negro", "Blanco", "Gris", "Azul Marino", "Rojo", "Azul", "Verde", "Marrón"]
+  const commonColors = [
+    "Negro", "Blanco", "Gris", "Azul Marino", "Rojo", "Azul", "Verde", "Marrón",
+    "Beige", "Celeste", "Amarillo", "Bordo", "Violeta", "Rosa", "Naranja",
+    "Crema", "Arena", "Oliva", "Verde Militar", "Mostaza", "Turquesa",
+    "Cian", "Lavanda", "Fucsia", "Granate", "Chocolate", "Camel"
+  ]
 
   useEffect(() => {
     if (productId) {

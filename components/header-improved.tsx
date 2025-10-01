@@ -19,10 +19,11 @@ export function Header() {
 
   const navigation = [
     { name: "Inicio", href: "/" },
-    { name: "Buzos", href: "/buzos" },
+    { name: "Abrigos", href: "/abrigos" },
     { name: "Remeras", href: "/remeras" },
     { name: "Pantalones", href: "/pantalones" },
-    { name: "Abrigos", href: "/abrigos" },
+    { name: "Camisas", href: "/camisas" },
+    { name: "Shorts", href: "/shorts" },
     { name: "Accesorios", href: "/accesorios" },
   ]
 

@@ -40,7 +40,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
   const [newColor, setNewColor] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "coats", "accessories", "shoes"]
+  const categories: Product["category"][] = ["hoodies", "tshirts", "pants", "shirts", "shorts", "accessories", "shoes"]
   const commonSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const pantsSizes = Array.from({ length: 21 }, (_, i) => (30 + i).toString()) // 30, 31, 32... hasta 50
   const commonColors = ["Negro", "Blanco", "Gris", "Azul Marino", "Rojo", "Azul", "Verde", "Marrón"]
@@ -175,10 +175,11 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
                   <SelectContent>
                     {categories.map((category) => (
                       <SelectItem key={category} value={category}>
-                        {category === 'hoodies' ? 'Buzos' : 
+                        {category === 'hoodies' ? 'Abrigos' : 
                          category === 'tshirts' ? 'Remeras' : 
                          category === 'pants' ? 'Pantalones' : 
-                         category === 'coats' ? 'Abrigos' :
+                         category === 'shirts' ? 'Camisas' :
+                         category === 'shorts' ? 'Shorts' :
                          category === 'accessories' ? 'Accesorios' : 
                          category === 'shoes' ? 'Zapatillas' : category}
                       </SelectItem>

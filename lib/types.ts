@@ -4,7 +4,7 @@ export interface Product {
   description: string
   price: number
   images: string[]
-  category: "hoodies" | "tshirts" | "pants" | "coats" | "accessories" | "shoes"
+  category: "hoodies" | "tshirts" | "pants" | "shirts" | "shorts" | "accessories" | "shoes"
   sizes: string[]
   colors: string[]
   inStock: boolean

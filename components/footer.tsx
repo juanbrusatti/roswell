@@ -21,8 +21,8 @@ export function Footer() {
             <h4 className="font-semibold">Comprar</h4>
             <ul className="space-y-2 text-sm opacity-80">
               <li>
-                <a href="/category/hoodies" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
-                  Buzos
+                <a href="/abrigos" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
+                  Abrigos
                 </a>
               </li>
               <li>
@@ -31,8 +31,18 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/category/pants" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
+                <a href="/pantalones" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
                   Pantalones
+                </a>
+              </li>
+              <li>
+                <a href="/camisas" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
+                  Camisas
+                </a>
+              </li>
+              <li>
+                <a href="/shorts" className="hover:opacity-100 transition-all duration-300 hover:translate-x-1 block">
+                  Shorts
                 </a>
               </li>
               <li>

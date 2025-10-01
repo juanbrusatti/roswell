@@ -4,8 +4,8 @@ import { ProductGrid } from '@/components/product-grid'
 import { useProductsByCategory } from '@/hooks/use-products-by-category'
 import { CategoryLayout } from '@/components/category-layout'
 
-export default function CoatsPage() {
-  const { products, loading, error } = useProductsByCategory('hoodies')
+export default function ShirtsPage() {
+  const { products, loading, error } = useProductsByCategory('shirts')
 
   return (
     <CategoryLayout>
@@ -13,9 +13,11 @@ export default function CoatsPage() {
         products={products}
         loading={loading}
         error={error}
-        title="Abrigos Roswell"
-        description="Descubrí nuestra colección completa de buzos y abrigos. Diseños únicos que definen tu personalidad."
+        title="Camisas Roswell"
+        description="Camisas para completar tu outfit urbano con estilo."
       />
     </CategoryLayout>
   )
 }
+
+

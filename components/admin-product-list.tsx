@@ -65,9 +65,11 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline" className="capitalize">
-                    {product.category === 'hoodies' ? 'Buzos' : 
+                    {product.category === 'hoodies' ? 'Abrigos' : 
                      product.category === 'tshirts' ? 'Remeras' : 
                      product.category === 'pants' ? 'Pantalones' : 
+                     product.category === 'shirts' ? 'Camisas' : 
+                     product.category === 'shorts' ? 'Shorts' : 
                      product.category === 'accessories' ? 'Accesorios' : 
                      product.category === 'shoes' ? 'Zapatillas' : product.category}
                   </Badge>

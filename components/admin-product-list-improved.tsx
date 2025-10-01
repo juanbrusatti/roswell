@@ -66,9 +66,11 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
 
   const categories = [
     { value: "all", label: "Todas las categorías" },
-    { value: "hoodies", label: "Buzos" },
+    { value: "hoodies", label: "Abrigos" },
     { value: "tshirts", label: "Remeras" },
     { value: "pants", label: "Pantalones" },
+    { value: "shirts", label: "Camisas" },
+    { value: "shorts", label: "Shorts" },
     { value: "accessories", label: "Accesorios" },
     { value: "shoes", label: "Zapatillas" }
   ]
@@ -178,9 +180,11 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className="capitalize">
-                        {product.category === 'hoodies' ? 'Buzos' : 
+                        {product.category === 'hoodies' ? 'Abrigos' : 
                          product.category === 'tshirts' ? 'Remeras' : 
                          product.category === 'pants' ? 'Pantalones' : 
+                         product.category === 'shirts' ? 'Camisas' : 
+                         product.category === 'shorts' ? 'Shorts' : 
                          product.category === 'accessories' ? 'Accesorios' : 
                          product.category === 'shoes' ? 'Zapatillas' : product.category}
                       </Badge>
@@ -264,9 +268,11 @@ export function AdminProductList({ onEditProduct }: AdminProductListProps) {
                       <div className="mt-3 space-y-2">
                         <div className="flex items-center justify-between">
                           <Badge variant="outline" className="capitalize text-xs">
-                            {product.category === 'hoodies' ? 'Buzos' : 
+                            {product.category === 'hoodies' ? 'Abrigos' : 
                              product.category === 'tshirts' ? 'Remeras' : 
                              product.category === 'pants' ? 'Pantalones' : 
+                             product.category === 'shirts' ? 'Camisas' : 
+                             product.category === 'shorts' ? 'Shorts' : 
                              product.category === 'accessories' ? 'Accesorios' : 
                              product.category === 'shoes' ? 'Zapatillas' : product.category}
                           </Badge>

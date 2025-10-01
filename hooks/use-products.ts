@@ -13,6 +13,12 @@ export function useProducts() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const normalizeCategory = (raw: string): Product["category"] => {
+    const mapped = raw === 'coats' ? 'hoodies' : raw
+    const allowed: Product["category"][] = ['hoodies','tshirts','pants','shirts','shorts','accessories','shoes']
+    return (allowed as string[]).includes(mapped) ? (mapped as Product["category"]) : 'tshirts'
+  }
+
   // Cargar productos desde Supabase
   const fetchProducts = async () => {
     try {
@@ -30,7 +36,7 @@ export function useProducts() {
         title: item.title,
         description: item.description,
         price: item.price,
-        category: item.category,
+        category: normalizeCategory(item.category),
         sizes: item.sizes ?? [],
         colors: item.colors ?? [],
         images: item.images ?? [],
@@ -52,13 +58,14 @@ export function useProducts() {
   // Agregar producto
   const addProduct = async (productData: Omit<Product, "id" | "createdAt">) => {
     try {
+      const safeCategory = normalizeCategory(productData.category)
       const { data, error } = await supabase
         .from('products')
         .insert({
           title: productData.title,
           description: productData.description,
           price: productData.price,
-          category: productData.category,
+          category: safeCategory,
           sizes: productData.sizes,
           colors: productData.colors,
           images: productData.images,
@@ -76,6 +83,7 @@ export function useProducts() {
       const newProduct: Product = {
         ...productData,
         id: data.id,
+        category: safeCategory,
         createdAt: new Date(data.created_at)
       }
       setProducts(prev => [newProduct, ...prev])
@@ -97,7 +105,7 @@ export function useProducts() {
       if (updates.title) updateData.title = updates.title
       if (updates.description) updateData.description = updates.description
       if (updates.price) updateData.price = updates.price
-      if (updates.category) updateData.category = updates.category
+      if (updates.category) updateData.category = normalizeCategory(updates.category)
       if (updates.sizes) updateData.sizes = updates.sizes
       if (updates.colors) updateData.colors = updates.colors
       if (updates.images) updateData.images = updates.images
@@ -114,7 +122,7 @@ export function useProducts() {
       // Actualizar estado local
       setProducts(prev =>
         prev.map(product =>
-          product.id === id ? { ...product, ...updates } : product
+          product.id === id ? { ...product, ...updates, ...(updates.category ? { category: normalizeCategory(updates.category) } : {}) } : product
         )
       )
     } catch (err) {

@@ -4,8 +4,8 @@ import { ProductGrid } from '@/components/product-grid'
 import { useProductsByCategory } from '@/hooks/use-products-by-category'
 import { CategoryLayout } from '@/components/category-layout'
 
-export default function HoodiesPage() {
-  const { products, loading, error } = useProductsByCategory('hoodies')
+export default function ShortsPage() {
+  const { products, loading, error } = useProductsByCategory('shorts')
 
   return (
     <CategoryLayout>
@@ -13,9 +13,11 @@ export default function HoodiesPage() {
         products={products}
         loading={loading}
         error={error}
-        title="Buzos Roswell"
-        description="Descubrí nuestra colección completa de buzos. Diseños únicos que definen tu personalidad."
+        title="Shorts Roswell"
+        description="Shorts cómodos y urbanos para todos los días."
       />
     </CategoryLayout>
   )
 }
+
+

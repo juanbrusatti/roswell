@@ -47,32 +47,19 @@ export function HeroContent({
         </p>
       </SlideUp>
 
-      {/* Botones de acción */}
+      {/* Botón de acción */}
       <ScaleIn delay={1.0}>
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div className="flex justify-center">
           <HeroButton
             variant="primary"
             size="lg"
             href={primaryButtonHref}
             onClick={onPrimaryClick}
             icon="arrow"
-            className="min-w-[200px]"
+            className="min-w-[200px] mx-auto"
           >
             {primaryButtonText}
           </HeroButton>
-          
-          {secondaryButtonText && (
-            <HeroButton
-              variant="outline"
-              size="lg"
-              href={secondaryButtonHref}
-              onClick={onSecondaryClick}
-              icon="play"
-              className="min-w-[200px]"
-            >
-              {secondaryButtonText}
-            </HeroButton>
-          )}
         </div>
       </ScaleIn>
 

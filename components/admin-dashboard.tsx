@@ -6,11 +6,10 @@ import { AdminHeader } from "./admin-header-improved"
 import { AdminSidebar } from "./admin-sidebar-improved"
 import { AdminProductList } from "./admin-product-list-improved"
 import { ProductForm } from "./product-form-improved"
-import { StatCard, StatGrid } from "./admin-stat-cards"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useProducts } from "@/hooks/use-products"
 import { useStore } from "@/lib/store"
-import { Package, DollarSign, ShoppingCart, TrendingUp, Shield, AlertTriangle } from "lucide-react"
+import { Shield, AlertTriangle } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export function AdminDashboard() {
@@ -53,10 +52,6 @@ export function AdminDashboard() {
     )
   }
 
-  const totalRevenue = products.reduce((sum, product) => sum + product.price, 0)
-  const inStockProducts = products.filter((p) => p.inStock).length
-  const featuredProducts = products.filter((p) => p.featured).length
-  const outOfStockProducts = products.length - inStockProducts
 
   const handleEditProduct = (productId: string) => {
     setEditingProductId(productId)
@@ -67,78 +62,12 @@ export function AdminDashboard() {
     setEditingProductId(null)
     setActiveTab("products")
   }
-
   const renderContent = () => {
     switch (activeTab) {
       case "dashboard":
         return (
           <div className="space-y-6">
-            {/* Estadísticas principales */}
-            <StatGrid>
-              <StatCard
-                title="Total Productos"
-                value={products.length}
-                icon={Package}
-                badge={{ text: "Catálogo completo" }}
-              />
-              <StatCard
-                title="En Stock"
-                value={inStockProducts}
-                icon={TrendingUp}
-                badge={{ text: `${Math.round((inStockProducts / products.length) * 100)}% disponible` }}
-              />
-              <StatCard
-                title="Sin Stock"
-                value={outOfStockProducts}
-                icon={AlertTriangle}
-                badge={{ text: "Requiere atención", variant: "destructive" }}
-              />
-              <StatCard
-                title="Valor del Catálogo"
-                value={`$${totalRevenue.toLocaleString('es-AR')}`}
-                icon={DollarSign}
-                badge={{ text: "ARS" }}
-              />
-            </StatGrid>
-
-            {/* Estadísticas adicionales */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Productos Destacados</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-accent">{featuredProducts}</div>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Productos marcados como destacados en la tienda
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Estado del Inventario</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">En Stock</span>
-                      <span className="font-medium">{inStockProducts}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Sin Stock</span>
-                      <span className="font-medium text-destructive">{outOfStockProducts}</span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div 
-                        className="bg-accent h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${(inStockProducts / products.length) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Contenido del dashboard */}
           </div>
         )
 

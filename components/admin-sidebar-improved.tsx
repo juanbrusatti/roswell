@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useStore } from "@/lib/store"
-import { Package, Plus, List, BarChart3, Users, Settings, Home } from "lucide-react"
+import { Package, Plus, Home } from "lucide-react"
 
 interface AdminSidebarProps {
   activeTab: string
@@ -12,7 +12,7 @@ interface AdminSidebarProps {
 }
 
 export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
-  const { products, cart } = useStore()
+  const { products } = useStore()
 
   const menuItems = [
     {
@@ -33,31 +33,6 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
       label: "Agregar Producto",
       icon: Plus,
       description: "Nuevo producto"
-    },
-    {
-      id: "orders",
-      label: "Pedidos",
-      icon: List,
-      count: cart.length,
-      description: "Ver pedidos"
-    },
-    {
-      id: "analytics",
-      label: "Análisis",
-      icon: BarChart3,
-      description: "Estadísticas"
-    },
-    {
-      id: "customers",
-      label: "Clientes",
-      icon: Users,
-      description: "Gestión de clientes"
-    },
-    {
-      id: "settings",
-      label: "Configuración",
-      icon: Settings,
-      description: "Ajustes del sistema"
     },
   ]
 

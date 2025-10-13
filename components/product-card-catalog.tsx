@@ -28,11 +28,6 @@ export function ProductCard({ product }: ProductCardProps) {
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {product.featured && (
-            <Badge className="bg-accent text-accent-foreground text-xs">
-              Destacado
-            </Badge>
-          )}
           {!product.inStock && (
             <Badge variant="destructive" className="text-xs">
               Sin Stock

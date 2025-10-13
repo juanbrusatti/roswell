@@ -82,15 +82,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Overlay gradiente en la imagen */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        {/* Badges flotantes */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-          {product.featured && (
-            <Badge className="bg-gradient-to-r from-accent to-accent/80 text-white border-0 shadow-lg backdrop-blur-sm animate-pulse">
-              <Star className="w-3 h-3 mr-1" />
-              Destacado
-            </Badge>
-          )}
-        </div>
+
 
         {/* Botón de favoritos flotante */}
         <Button

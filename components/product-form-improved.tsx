@@ -33,8 +33,7 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
     sizes: [] as string[],
     colors: [] as string[],
     images: [] as string[],
-    inStock: true,
-    featured: true,
+    inStock: true
   })
 
   const [newSize, setNewSize] = useState("")
@@ -65,7 +64,6 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
           colors: product.colors,
           images: product.images,
           inStock: product.inStock,
-          featured: product.featured,
         })
       }
     }
@@ -103,7 +101,6 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
         colors: formData.colors,
         images: formData.images,
         inStock: formData.inStock,
-        featured: formData.featured,
       }
 
       if (productId) {
@@ -269,24 +266,13 @@ export function ProductForm({ productId, onSave, onCancel }: ProductFormProps) {
 
               <div className="space-y-4">
                 <Label className="text-sm font-medium">Configuración del Producto</Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="inStock"
-                      checked={formData.inStock}
-                      onCheckedChange={(checked) => setFormData({ ...formData, inStock: !!checked })}
-                    />
-                    <Label htmlFor="inStock" className="text-sm">En Stock</Label>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="featured"
-                      checked={formData.featured}
-                      onCheckedChange={(checked) => setFormData({ ...formData, featured: !!checked })}
-                    />
-                    <Label htmlFor="featured" className="text-sm">Producto Destacado</Label>
-                  </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="inStock"
+                    checked={formData.inStock}
+                    onCheckedChange={(checked) => setFormData({ ...formData, inStock: !!checked })}
+                  />
+                  <Label htmlFor="inStock" className="text-sm">En Stock</Label>
                 </div>
               </div>
             </CardContent>

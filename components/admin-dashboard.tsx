@@ -9,7 +9,7 @@ import { ProductForm } from "./product-form-improved"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useProducts } from "@/hooks/use-products"
 import { useStore } from "@/lib/store"
-import { Shield, AlertTriangle } from "lucide-react"
+import { Shield, AlertTriangle, ShoppingCart, Package } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export function AdminDashboard() {
@@ -17,6 +17,11 @@ export function AdminDashboard() {
   const [editingProductId, setEditingProductId] = useState<string | null>(null)
   const { products, loading } = useProducts()
   const { isAuthenticated, isAdmin } = useStore()
+  
+  // Calculate statistics
+  const inStockProducts = products.filter(p => p.inStock).length
+  const featuredProducts = products.filter(p => p.featured).length
+  const totalRevenue = products.reduce((sum, product) => sum + product.price, 0)
 
   // Redirigir si no está autenticado
   useEffect(() => {
@@ -67,7 +72,72 @@ export function AdminDashboard() {
       case "dashboard":
         return (
           <div className="space-y-6">
-            {/* Contenido del dashboard */}
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Total Productos
+                  </CardTitle>
+                  <Package className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{products.length}</div>
+                  <p className="text-xs text-muted-foreground">
+                    Productos en el catálogo
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">En Stock</CardTitle>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="h-4 w-4 text-muted-foreground"
+                  >
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{inStockProducts}</div>
+                  <p className="text-xs text-muted-foreground">
+                    Productos disponibles
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Valor del Catálogo
+                  </CardTitle>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="h-4 w-4 text-muted-foreground"
+                  >
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    ${totalRevenue.toLocaleString('es-AR')}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Valor total del inventario
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         )
 
@@ -101,34 +171,6 @@ export function AdminDashboard() {
               </div>
             </CardContent>
           </Card>
-        )
-
-      case "analytics":
-        return (
-          <div className="space-y-6">
-            <StatGrid>
-              <StatCard
-                title="Total Productos"
-                value={products.length}
-                icon={Package}
-              />
-              <StatCard
-                title="En Stock"
-                value={inStockProducts}
-                icon={TrendingUp}
-              />
-              <StatCard
-                title="Items en Carrito"
-                value="0"
-                icon={ShoppingCart}
-              />
-              <StatCard
-                title="Valor del Catálogo"
-                value={`$${totalRevenue.toLocaleString('es-AR')}`}
-                icon={DollarSign}
-              />
-            </StatGrid>
-          </div>
         )
 
       default:

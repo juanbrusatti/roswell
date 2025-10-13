@@ -6,7 +6,7 @@ import { useStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, ShoppingCart, Search, User } from "lucide-react"
+import { Menu, ShoppingCart, User } from "lucide-react"
 import { SecretAdminAccess } from "./secret-admin-access"
 import { AdminLogoutButton } from "./admin-logout-button"
 import { CartSidebar } from "./cart-sidebar"
@@ -51,11 +51,6 @@ export function Header() {
 
           {/* Actions - Desktop */}
           <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
-            <Button variant="ghost" size="sm" className="h-9 px-3">
-              <Search className="h-4 w-4" />
-              <span className="sr-only">Buscar</span>
-            </Button>
-
             <CartSidebar>
               <Button variant="ghost" size="sm" className="h-9 px-3 relative">
                 <ShoppingCart className="h-4 w-4" />
@@ -82,10 +77,6 @@ export function Header() {
 
           {/* Actions - Mobile */}
           <div className="flex lg:hidden items-center space-x-2">
-            <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
-              <Search className="h-4 w-4" />
-            </Button>
-
             <CartSidebar>
               <Button variant="ghost" size="sm" className="h-9 w-9 p-0 relative">
                 <ShoppingCart className="h-4 w-4" />

@@ -8,7 +8,7 @@ export interface Product {
   sizes: string[]
   colors: string[]
   inStock: boolean
-  featured: boolean
+  featured?: boolean
   createdAt: Date
 }
 

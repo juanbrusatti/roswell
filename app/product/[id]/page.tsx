@@ -241,24 +241,15 @@ export default function ProductDetailPage() {
                 </div>
               </div>
 
-              {/* Botones de acción */}
-              <div className="flex gap-4">
-                <Button 
-                  size="lg" 
-                  className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground"
-                  disabled={!product.inStock}
-                >
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  Agregar al Carrito
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="px-8"
-                >
-                  Comprar Ahora
-                </Button>
-              </div>
+              {/* Botón de acción */}
+              <Button 
+                size="lg" 
+                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                disabled={!product.inStock}
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Agregar al Carrito
+              </Button>
 
               {!product.inStock && (
                 <p className="text-sm text-muted-foreground text-center">

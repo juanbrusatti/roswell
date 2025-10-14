@@ -143,29 +143,20 @@ export function ProductCard({ product }: ProductCardProps) {
         <Button
           onClick={handleAddToCart}
           disabled={!isReadyToAdd || isAddingToCart}
-          className={`w-full h-11 ${
-            isAddingToCart 
-              ? "bg-green-600 hover:bg-green-700" 
-              : !isReadyToAdd 
-                ? "opacity-50" 
-                : ""
-          }`}
+          className={`w-full h-11 ${!isReadyToAdd ? "opacity-50" : "hover:bg-accent"}`}
+          variant="default"
         >
-          {isAddingToCart ? (
-            <>
-              <Check className="w-4 h-4 mr-2" />
-              ¡Agregado!
-            </>
-          ) : !product.inStock ? (
-            "Sin Stock"
-          ) : !selectedSize || !selectedColor ? (
-            "Selecciona talle y color"
-          ) : (
-            <>
+          <div className="flex items-center justify-center">
+            {isAddingToCart ? (
+              <Check className="w-4 h-4 mr-2 text-green-600" />
+            ) : (
               <ShoppingCart className="w-4 h-4 mr-2" />
-              Agregar al Carrito
-            </>
-          )}
+            )}
+            {isAddingToCart ? "¡Agregado!" : 
+             !product.inStock ? "Sin Stock" : 
+             !selectedSize || !selectedColor ? "Selecciona talle y color" : 
+             "Agregar al Carrito"}
+          </div>
         </Button>
 
         {/* Información adicional */}

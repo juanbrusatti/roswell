@@ -403,105 +403,37 @@
   }
 }
 
-/* Animaciones del carrito */
-@keyframes cart-wheelie {
+/* Animaciones del carrito - versión sutil */
+@keyframes cart-pulse {
   0% {
-    transform: translateX(0) rotate(0deg);
+    transform: scale(1);
   }
-  30% {
-    transform: translateX(-20px) rotate(-15deg);
-  }
-  60% {
-    transform: translateX(-40px) rotate(-25deg);
-  }
-  80% {
-    transform: translateX(-60px) rotate(-35deg);
+  50% {
+    transform: scale(1.1);
   }
   100% {
-    transform: translateX(-80px) rotate(-45deg);
+    transform: scale(1);
   }
 }
 
-@keyframes cart-crash {
+@keyframes button-glow {
   0% {
-    transform: translateX(-80px) rotate(-45deg);
-  }
-  50% {
-    transform: translateX(-85px) rotate(-50deg) scale(1.1);
-  }
-  100% {
-    transform: translateX(-80px) rotate(-45deg) scale(1);
-  }
-}
-
-@keyframes text-bounce {
-  0% {
-    transform: translateX(0) scale(1);
-  }
-  25% {
-    transform: translateX(5px) scale(1.05);
-  }
-  50% {
-    transform: translateX(-3px) scale(0.95);
-  }
-  75% {
-    transform: translateX(2px) scale(1.02);
-  }
-  100% {
-    transform: translateX(0) scale(1);
-  }
-}
-
-@keyframes button-shake {
-  0% {
-    transform: translateX(0);
-  }
-  10% {
-    transform: translateX(-2px);
-  }
-  20% {
-    transform: translateX(2px);
-  }
-  30% {
-    transform: translateX(-2px);
-  }
-  40% {
-    transform: translateX(2px);
-  }
-  50% {
-    transform: translateX(-1px);
-  }
-  60% {
-    transform: translateX(1px);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
   }
   70% {
-    transform: translateX(-1px);
-  }
-  80% {
-    transform: translateX(1px);
-  }
-  90% {
-    transform: translateX(-0.5px);
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
   }
   100% {
-    transform: translateX(0);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
   }
 }
 
 .cart-animation {
-  animation: cart-wheelie 0.6s ease-out forwards;
+  animation: cart-pulse 0.3s ease-in-out forwards;
 }
 
-.cart-crash {
-  animation: cart-crash 0.3s ease-in-out forwards;
-}
-
-.text-bounce {
-  animation: text-bounce 0.4s ease-in-out forwards;
-}
-
-.button-shake {
-  animation: button-shake 0.5s ease-in-out forwards;
+.button-glow {
+  animation: button-glow 0.6s ease-out forwards;
 }
 
 /* Optimizaciones para parallax scrolling */
@@ -522,4 +454,33 @@
   will-change: opacity, transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+/* Modo de rendimiento: reducir animaciones y filtros en equipos lentos */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Desactivar efectos costosos de blur en UI */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Parallax y transformaciones continuas fuera */
+  .parallax-container,
+  .parallax-background,
+  .parallax-content,
+  .glass-sidebar {
+    will-change: auto !important;
+    transform: none !important;
+    animation: none !important;
+  }
 }

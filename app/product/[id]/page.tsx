@@ -8,16 +8,19 @@ import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { useProducts } from '@/hooks/use-products'
+import { useStore } from '@/lib/store'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function ProductDetailPage() {
   const params = useParams()
   const router = useRouter()
   const { products, loading } = useProducts()
+  const { addToCart } = useStore()
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isLiked, setIsLiked] = useState(false)
   const [isAnimating, setIsAnimating] = useState(true)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
 
   const product = products.find(p => p.id === params.id)
 
@@ -26,6 +29,31 @@ export default function ProductDetailPage() {
     const timer = setTimeout(() => setIsAnimating(false), 100)
     return () => clearTimeout(timer)
   }, [])
+
+  const handleAddToCart = () => {
+    if (!product || isAddingToCart || !product.inStock) return
+    
+    setIsAddingToCart(true)
+    
+    // Agregar al carrito (usando el primer talle y color disponible)
+    const defaultSize = product.sizes[0] || 'M'
+    const defaultColor = product.colors[0] || 'Negro'
+    addToCart(product, defaultSize, defaultColor, quantity)
+    
+    // Animación sutil del botón
+    const button = document.querySelector('.add-to-cart-btn')
+    if (button) {
+      button.classList.add('button-glow')
+    }
+    
+    // Resetear estado después de la animación
+    setTimeout(() => {
+      setIsAddingToCart(false)
+      if (button) {
+        button.classList.remove('button-glow')
+      }
+    }, 600)
+  }
 
   if (loading) {
     return (
@@ -241,24 +269,16 @@ export default function ProductDetailPage() {
                 </div>
               </div>
 
-              {/* Botones de acción */}
-              <div className="flex gap-4">
-                <Button 
-                  size="lg" 
-                  className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground"
-                  disabled={!product.inStock}
-                >
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  Agregar al Carrito
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="px-8"
-                >
-                  Comprar Ahora
-                </Button>
-              </div>
+              {/* Botón de acción */}
+              <Button 
+                size="lg" 
+                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground add-to-cart-btn"
+                disabled={!product.inStock || isAddingToCart}
+                onClick={handleAddToCart}
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                {isAddingToCart ? "Agregando..." : "Agregar al Carrito"}
+              </Button>
 
               {!product.inStock && (
                 <p className="text-sm text-muted-foreground text-center">

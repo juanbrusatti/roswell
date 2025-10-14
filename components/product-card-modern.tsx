@@ -38,24 +38,19 @@ export function ProductCard({ product }: ProductCardProps) {
     const defaultColor = product.colors[0] || 'Negro'
     addToCart(product, defaultSize, defaultColor, 1)
     
-    // Secuencia de animaciones: wheelie -> crash -> reset
-    setTimeout(() => {
-      // Cambiar a animación de crash después del wheelie
-      const cartIcon = document.querySelector('.cart-animation')
-      if (cartIcon) {
-        cartIcon.classList.remove('cart-animation')
-        cartIcon.classList.add('cart-crash')
-      }
-    }, 600) // Después del wheelie
+    // Animación sutil del carrito
+    const cartIcon = document.querySelector('.cart-animation')
+    if (cartIcon) {
+      cartIcon.classList.add('cart-animation')
+    }
     
-    // Resetear la animación después de que termine todo
+    // Resetear la animación después de que termine
     setTimeout(() => {
       setIsAnimating(false)
-      const cartIcon = document.querySelector('.cart-crash')
       if (cartIcon) {
-        cartIcon.classList.remove('cart-crash')
+        cartIcon.classList.remove('cart-animation')
       }
-    }, 1000) // Duración total de la animación
+    }, 300) // Duración de la animación sutil
   }
 
   return (

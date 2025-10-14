@@ -455,3 +455,32 @@
   transform: translateZ(0);
   backface-visibility: hidden;
 }
+
+/* Modo de rendimiento: reducir animaciones y filtros en equipos lentos */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Desactivar efectos costosos de blur en UI */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Parallax y transformaciones continuas fuera */
+  .parallax-container,
+  .parallax-background,
+  .parallax-content,
+  .glass-sidebar {
+    will-change: auto !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

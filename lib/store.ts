@@ -1,7 +1,7 @@
 "use client"
 
 import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { persist, subscribeWithSelector } from "zustand/middleware"
 import type { Product, CartItem } from "./types"
 
 interface ProductStore {
@@ -18,6 +18,8 @@ interface ProductStore {
   clearCart: () => void
   login: (username: string, password: string) => boolean
   logout: () => void
+  getCartItemsCount: () => number
+  getCartTotal: () => number
 }
 
 // Credenciales de administrador (en producción esto debería estar en variables de entorno)
@@ -27,95 +29,105 @@ const ADMIN_CREDENTIALS = {
 }
 
 export const useStore = create<ProductStore>()(
-  persist(
-    (set, get) => ({
-      products: [], // Array vacío - los productos se cargan desde Supabase
-      cart: [],
-      isAdmin: false,
-      isAuthenticated: false,
+  subscribeWithSelector(
+    persist(
+      (set, get) => ({
+        products: [], // Array vacío - los productos se cargan desde Supabase
+        cart: [],
+        isAdmin: false,
+        isAuthenticated: false,
 
-      addProduct: (productData) => {
-        const newProduct: Product = {
-          ...productData,
-          id: Date.now().toString(),
-          createdAt: new Date(),
-        }
-        set((state) => ({
-          products: [...state.products, newProduct],
-        }))
-      },
+        addProduct: (productData) => {
+          const newProduct: Product = {
+            ...productData,
+            id: Date.now().toString(),
+            createdAt: new Date(),
+          }
+          set((state) => ({
+            products: [...state.products, newProduct],
+          }))
+        },
 
-      updateProduct: (id, updates) => {
-        set((state) => ({
-          products: state.products.map((product) => (product.id === id ? { ...product, ...updates } : product)),
-        }))
-      },
+        updateProduct: (id, updates) => {
+          set((state) => ({
+            products: state.products.map((product) => (product.id === id ? { ...product, ...updates } : product)),
+          }))
+        },
 
-      deleteProduct: (id) => {
-        set((state) => ({
-          products: state.products.filter((product) => product.id !== id),
-        }))
-      },
+        deleteProduct: (id) => {
+          set((state) => ({
+            products: state.products.filter((product) => product.id !== id),
+          }))
+        },
 
-      addToCart: (product, size, color, quantity) => {
-        set((state) => {
-          const existingItem = state.cart.find(
-            (item) => item.product.id === product.id && item.size === size && item.color === color,
-          )
+        addToCart: (product, size, color, quantity) => {
+          set((state) => {
+            const existingItem = state.cart.find(
+              (item) => item.product.id === product.id && item.size === size && item.color === color,
+            )
 
-          if (existingItem) {
-            return {
-              cart: state.cart.map((item) =>
-                item === existingItem ? { ...item, quantity: item.quantity + quantity } : item,
-              ),
+            if (existingItem) {
+              return {
+                cart: state.cart.map((item) =>
+                  item === existingItem ? { ...item, quantity: item.quantity + quantity } : item,
+                ),
+              }
             }
+
+            return {
+              cart: [...state.cart, { product, size, color, quantity }],
+            }
+          })
+        },
+
+        removeFromCart: (productId, size, color) => {
+          set((state) => ({
+            cart: state.cart.filter(
+              (item) => !(item.product.id === productId && item.size === size && item.color === color),
+            ),
+          }))
+        },
+
+        updateCartQuantity: (productId, size, color, quantity) => {
+          if (quantity <= 0) {
+            get().removeFromCart(productId, size, color)
+            return
           }
 
-          return {
-            cart: [...state.cart, { product, size, color, quantity }],
+          set((state) => ({
+            cart: state.cart.map((item) =>
+              item.product.id === productId && item.size === size && item.color === color ? { ...item, quantity } : item,
+            ),
+          }))
+        },
+
+        clearCart: () => {
+          set({ cart: [] })
+        },
+
+        login: (username, password) => {
+          if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            set({ isAuthenticated: true, isAdmin: true })
+            return true
           }
-        })
-      },
+          return false
+        },
 
-      removeFromCart: (productId, size, color) => {
-        set((state) => ({
-          cart: state.cart.filter(
-            (item) => !(item.product.id === productId && item.size === size && item.color === color),
-          ),
-        }))
-      },
+        logout: () => {
+          set({ isAuthenticated: false, isAdmin: false })
+        },
 
-      updateCartQuantity: (productId, size, color, quantity) => {
-        if (quantity <= 0) {
-          get().removeFromCart(productId, size, color)
-          return
-        }
+        getCartItemsCount: () => {
+          return get().cart.reduce((total, item) => total + item.quantity, 0)
+        },
 
-        set((state) => ({
-          cart: state.cart.map((item) =>
-            item.product.id === productId && item.size === size && item.color === color ? { ...item, quantity } : item,
-          ),
-        }))
+        getCartTotal: () => {
+          return get().cart.reduce((total, item) => total + item.product.price * item.quantity, 0)
+        },
+      }),
+      {
+        name: "street-store",
       },
-
-      clearCart: () => {
-        set({ cart: [] })
-      },
-
-      login: (username, password) => {
-        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-          set({ isAuthenticated: true, isAdmin: true })
-          return true
-        }
-        return false
-      },
-
-      logout: () => {
-        set({ isAuthenticated: false, isAdmin: false })
-      },
-    }),
-    {
-      name: "street-store",
-    },
+    ),
   ),
 )

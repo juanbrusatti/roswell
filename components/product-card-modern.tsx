@@ -1,65 +1,76 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useState, memo, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import type { Product } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Zap, ShoppingCart } from "lucide-react"
+import { Heart, ShoppingCart } from "lucide-react"
 import { useStore } from "@/lib/store"
 
 interface ProductCardProps {
   product: Product
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const router = useRouter()
   const { addToCart } = useStore()
 
-  const handleViewDetails = () => {
-    console.log('Botón Ver detalles clickeado para producto:', product.id)
+  const handleViewDetails = useCallback(() => {
     router.push(`/product/${product.id}`)
-  }
+  }, [product.id, router])
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
-    console.log('Botón Agregar al carrito clickeado')
     
     if (isAnimating || !product.inStock) return
     
     setIsAnimating(true)
     
-    // Agregar al carrito (usando el primer talle y color disponible)
     const defaultSize = product.sizes[0] || 'M'
     const defaultColor = product.colors[0] || 'Negro'
     addToCart(product, defaultSize, defaultColor, 1)
     
-    // Animación sutil del carrito
-    const cartIcon = document.querySelector('.cart-animation')
-    if (cartIcon) {
-      cartIcon.classList.add('cart-animation')
-    }
-    
-    // Resetear la animación después de que termine
     setTimeout(() => {
       setIsAnimating(false)
-      if (cartIcon) {
-        cartIcon.classList.remove('cart-animation')
-      }
-    }, 300) // Duración de la animación sutil
-  }
+    }, 300)
+  }, [isAnimating, product, addToCart])
+
+  const handleCardClick = useCallback(() => {
+    router.push(`/product/${product.id}`)
+  }, [product.id, router])
+
+  const handleLikeClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    setIsLiked(!isLiked)
+  }, [isLiked])
+
+  const categoryDisplay = useMemo(() => {
+    const categoryMap = {
+      'hoodies': 'Buzos',
+      'tshirts': 'Remeras', 
+      'pants': 'Pantalones',
+      'shirts': 'Camisas',
+      'shorts': 'Shorts',
+      'accessories': 'Accesorios',
+      'shoes': 'Zapatillas'
+    }
+    return categoryMap[product.category] || product.category
+  }, [product.category])
+
+  const formattedPrice = useMemo(() => 
+    product.price.toLocaleString('es-AR'),
+    [product.price]
+  )
 
   return (
     <Card 
       className="group relative overflow-hidden border border-border/20 bg-gradient-to-br from-card/90 via-card/80 to-card/70 backdrop-blur-sm hover:from-card hover:via-card/90 hover:to-card/80 transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-accent/10 cursor-pointer"
-      onClick={() => {
-        console.log('Card clickeada para producto:', product.id)
-        router.push(`/product/${product.id}`)
-      }}
+      onClick={handleCardClick}
     >
       {/* Bordes animados */}
       <div className="absolute inset-0 bg-gradient-to-r from-accent/20 via-transparent to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none" />
@@ -72,6 +83,8 @@ export function ProductCard({ product }: ProductCardProps) {
           alt={product.title}
           fill
           className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         
         {/* Overlay gradiente en la imagen */}
@@ -86,10 +99,7 @@ export function ProductCard({ product }: ProductCardProps) {
           className={`absolute top-4 right-4 h-10 w-10 p-0 bg-white/20 backdrop-blur-md hover:bg-white/30 border border-white/30 transition-all duration-300 ${
             isLiked ? "text-red-500 bg-red-500/20" : "text-white hover:text-red-400"
           }`}
-          onClick={(e) => {
-            e.stopPropagation()
-            setIsLiked(!isLiked)
-          }}
+          onClick={handleLikeClick}
         >
           <Heart className={`h-4 w-4 transition-all duration-300 ${isLiked ? "fill-current scale-110" : ""}`} />
         </Button>
@@ -121,12 +131,7 @@ export function ProductCard({ product }: ProductCardProps) {
               variant="outline" 
               className="ml-3 capitalize text-xs font-semibold bg-gradient-to-r from-accent/10 to-accent/5 border-accent/30 text-accent"
             >
-              {product.category === 'hoodies' ? 'Buzos' : 
-               product.category === 'tshirts' ? 'Remeras' : 
-               product.category === 'pants' ? 'Pantalones' : 
-               product.category === 'coats' ? 'Abrigos' :
-               product.category === 'accessories' ? 'Accesorios' : 
-               product.category === 'shoes' ? 'Zapatillas' : product.category}
+              {categoryDisplay}
             </Badge>
           </div>
           
@@ -139,7 +144,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center justify-between pt-2">
           <div className="space-y-1">
             <span className="text-2xl font-black text-foreground bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
-              ${product.price.toLocaleString('es-AR')}
+              ${formattedPrice}
             </span>
             <div className="text-xs text-muted-foreground font-medium">
               {product.sizes.length} talles • {product.colors.length} colores
@@ -195,4 +200,6 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardContent>
     </Card>
   )
-}
+})
+
+export { ProductCard }

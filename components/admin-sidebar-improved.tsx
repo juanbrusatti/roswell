@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useStore } from "@/lib/store"
-import { Package, Plus, Home } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Package, Plus, Home, ExternalLink } from "lucide-react"
 
 interface AdminSidebarProps {
   activeTab: string
@@ -13,6 +14,7 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
   const { products } = useStore()
+  const router = useRouter()
 
   const menuItems = [
     {
@@ -34,6 +36,13 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
       icon: Plus,
       description: "Nuevo producto"
     },
+    {
+      id: "view-store",
+      label: "Ver Tienda",
+      icon: ExternalLink,
+      description: "Ver como usuario",
+      action: "redirect"
+    },
   ]
 
   return (
@@ -53,12 +62,22 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
               <Button
                 key={item.id}
                 variant={isActive ? "secondary" : "ghost"}
-                className={`w-full justify-start h-auto p-3 ${
+                className={`w-full justify-start h-auto p-3 cursor-pointer ${
                   isActive 
                     ? "bg-accent/10 text-accent border-accent/20" 
                     : "hover:bg-muted/50"
                 }`}
-                onClick={() => onTabChange(item.id)}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  if (item.action === "redirect") {
+                    // Para administradores, redirigir a la página principal pero manteniendo la sesión
+                    window.location.href = "/?view=store"
+                  } else {
+                    onTabChange(item.id)
+                  }
+                }}
               >
                 <div className="flex items-center w-full">
                   <Icon className={`h-4 w-4 mr-3 ${

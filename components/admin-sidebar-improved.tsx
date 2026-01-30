@@ -62,15 +62,18 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
               <Button
                 key={item.id}
                 variant={isActive ? "secondary" : "ghost"}
-                className={`w-full justify-start h-auto p-3 ${
+                className={`w-full justify-start h-auto p-3 cursor-pointer ${
                   isActive 
                     ? "bg-accent/10 text-accent border-accent/20" 
                     : "hover:bg-muted/50"
                 }`}
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
                   if (item.action === "redirect") {
                     // Para administradores, redirigir a la página principal pero manteniendo la sesión
-                    router.push("/")
+                    window.location.href = "/?view=store"
                   } else {
                     onTabChange(item.id)
                   }

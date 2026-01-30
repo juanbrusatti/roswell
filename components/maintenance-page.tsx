@@ -74,7 +74,7 @@ export function MaintenancePage() {
             onClick={() => setShowAdminLogin(!showAdminLogin)}
             className="text-gray-500 hover:text-gray-300 text-xs"
           >
-            Acceso administrador
+            Acceso administrador (no tocar)
           </Button>
         </div>
 
@@ -82,7 +82,7 @@ export function MaintenancePage() {
         {showAdminLogin && (
           <Card className="bg-gray-900 border-gray-800 max-w-sm mx-auto">
             <CardHeader>
-              <CardTitle className="text-white text-lg">Acceso Administrador</CardTitle>
+              <CardTitle className="text-white text-lg">Dije que no tocar</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleAdminLogin} className="space-y-4">

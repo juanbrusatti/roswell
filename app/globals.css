@@ -442,18 +442,37 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+  contain: layout style paint;
 }
 
 .parallax-background {
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+  contain: layout style paint;
 }
 
 .parallax-content {
   will-change: opacity, transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+  contain: layout style paint;
+}
+
+/* Reducir complejidad de animaciones en dispositivos móviles */
+@media (max-width: 768px) {
+  .parallax-container,
+  .parallax-background,
+  .parallax-content {
+    will-change: auto;
+    transform: none;
+  }
+  
+  .glass-sidebar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.8);
+  }
 }
 
 /* Modo de rendimiento: reducir animaciones y filtros en equipos lentos */

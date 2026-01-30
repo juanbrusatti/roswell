@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import { BackgroundOverlay } from "./background-overlay"
 import { FloatingElements } from "./geometric-elements"
 import { HeroContent } from "./hero-content"
@@ -8,15 +8,22 @@ import { HeroContent } from "./hero-content"
 export function HeroSection() {
   const [scrollY, setScrollY] = useState(0)
   const heroRef = useRef<HTMLElement>(null)
+  const tickingRef = useRef(false)
+
+  const handleScroll = useCallback(() => {
+    if (!tickingRef.current) {
+      requestAnimationFrame(() => {
+        setScrollY(window.scrollY)
+        tickingRef.current = false
+      })
+      tickingRef.current = true
+    }
+  }, [])
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY)
-    }
-
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [handleScroll])
 
   // Calcular el progreso del scroll (0 a 1)
   const scrollProgress = Math.min(scrollY / (heroRef.current?.offsetHeight || 1000), 1)

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, memo, useMemo, useCallback } from "react"
 import Link from "next/link"
 import { useStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
@@ -11,13 +11,13 @@ import { SecretAdminAccess } from "./secret-admin-access"
 import { AdminLogoutButton } from "./admin-logout-button"
 import { CartSidebar } from "./cart-sidebar"
 
-export function Header() {
+const Header = memo(function Header() {
   const { cart, isAdmin } = useStore()
   const [isOpen, setIsOpen] = useState(false)
 
-  const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0)
+  const cartItemsCount = useStore((state) => state.getCartItemsCount())
 
-  const navigation = [
+  const navigation = useMemo(() => [
     { name: "Inicio", href: "/" },
     { name: "Abrigos", href: "/abrigos" },
     { name: "Remeras", href: "/remeras" },
@@ -25,7 +25,11 @@ export function Header() {
     { name: "Camisas", href: "/camisas" },
     { name: "Shorts", href: "/shorts" },
     { name: "Accesorios", href: "/accesorios" },
-  ]
+  ], [])
+
+  const handleNavClick = useCallback(() => {
+    setIsOpen(false)
+  }, [])
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -113,7 +117,7 @@ export function Header() {
                         key={item.name}
                         href={item.href}
                         className="text-lg font-medium text-foreground hover:text-accent transition-all duration-300 hover:translate-x-2 px-3 py-2 rounded-lg hover:bg-white/5"
-                        onClick={() => setIsOpen(false)}
+                        onClick={handleNavClick}
                       >
                         {item.name}
                       </Link>
@@ -146,4 +150,6 @@ export function Header() {
 
     </header>
   )
-}
+})
+
+export { Header }

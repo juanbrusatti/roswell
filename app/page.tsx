@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/hero-section"
 import { FeaturedProducts } from "@/components/featured-products"
 import { Footer } from "@/components/footer"
 import { AdminDashboard } from "@/components/admin-dashboard"
+import { MaintenancePage } from "@/components/maintenance-page"
 
 export default function HomePage() {
   const { isAdmin } = useStore()
@@ -14,14 +15,5 @@ export default function HomePage() {
     return <AdminDashboard />
   }
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1">
-        <HeroSection />
-        <FeaturedProducts />
-      </main>
-      <Footer />
-    </div>
-  )
+  return <MaintenancePage />
 }
